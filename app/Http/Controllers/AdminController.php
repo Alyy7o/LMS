@@ -1,0 +1,698 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Admin;
+use App\Models\Classes;
+use App\Models\Parents;
+use App\Models\Section;
+use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class AdminController extends Controller
+{
+
+    //Parents
+    // public function parent()
+    // {
+    //     return view('admin.parents');
+    // }
+    // public function add_parents(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required | string',
+    //         'email' => 'required | email',
+    //         'pass' => 'required | min:8', 
+    //     ]);
+
+    //     Admin::create([
+    //         'name'=> $request->name,
+    //         'email'=> $request->email,
+    //         'password'=> $request->pass,
+    //     ]);
+
+    //     return redirect()->route('admin.index')
+    //             ->with('status',"Record Added Successfully!");
+    // }
+
+
+
+    // Classes
+
+    // Show All Classes
+    public function all_classes(){
+        
+        $classes = Classes::all();
+        return view("class.all_classes",compact('classes'));
+    }
+    
+    // View Add Class
+    public function add_class(){
+        return view('class.add_class');
+    }
+
+    // Store Class
+    public function store_class(Request $request)
+    {
+        $request->validate([
+            'name' => 'required | string',
+            
+        ]);
+
+        $class = new Classes();
+
+        $class->name = $request->name;
+        $class->save();
+
+        return redirect()->route('admin.all_classes')
+                ->with('status',"Class Added Successfully!");
+    }
+
+    // View All Classes
+    public function show_classes()
+    {
+
+        return view('class.all_classes');
+    }
+
+    // View Edit Class
+    public function edit_class(string $id)
+    {
+        $classes = Classes::findOrFail($id);
+
+        return view('class.edit_class',compact('classes'));
+    }
+
+    // Edit Class
+    public function update_class(Request $request, string $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $class = Classes::findOrFail($id);
+        $class->name = $request->name;
+        $class->save();
+
+        return redirect()->route('admin.all_classes')->with('status', 'Class updated successfully!');
+    }
+
+    // Delete Class
+    public function destroy_class(string $id)
+    {
+        Classes::destroy($id);
+
+        return redirect()->route('admin.all_classes')
+        ->with('status',"Class Deleted");   
+    }
+
+
+    // Sections
+
+    // View Add Section
+    public function add_section(){
+
+        $classes = Classes::all();
+        return view('sections.add_section', compact('classes'));
+    }
+
+    // Store Section
+    public function store_section(Request $request){
+
+    $request->validate([
+        'name' => 'required|string',
+        'class_id' => 'required|exists:classes,id',
+    ]);
+
+    Section::create([
+        'name' => $request->name,
+        'class_id' => $request->class_id,
+    ]);
+
+    return redirect()->route('add_section')->with('status', 'Section Added Successfully!');
+}
+
+// View Section
+public function show_sections(string $id) {
+    $class = Classes::with('sections')->findOrFail($id);
+    return view('sections.show_sections', compact('class'));
+    
+}
+
+// View Edit Section
+public function edit_section(string $id)
+{
+    $sections = Section::findOrFail($id);
+
+    return view('sections.edit_section',compact('sections'));
+}
+
+// Edit Section
+public function update_section(Request $request, string $id)
+{
+    $request->validate([
+        'name' => 'required|string',
+    ]);
+
+    $section = Section::findOrFail($id);
+    $section->name = $request->name;
+    $section->save();
+
+    return redirect()->route('admin.all_classes')->with('status', 'Section updated successfully!');
+}
+
+// Delete Section
+public function destroy_section(string $id)
+{
+    
+    Section::destroy($id);
+    
+    return redirect()->route('admin.all_classes')
+                     ->with('status', "Section Deleted");
+}
+
+
+
+   //Students
+
+    // All Students
+    public function all_students()
+    {
+        $students = Student::with('classes','sections','parents')->get();
+        return view('student.all_students',compact('students'));
+    }
+
+
+    //To Add Students
+    public function add_students()
+    {
+        $parents = Parents::all();
+        $classes = Classes::all();
+        return view('student.admission_form', compact('classes','parents'));
+    }
+
+    //Fetch Sections using ajax
+    public function fetchSection( Request $request)
+    {
+        $sections = Section::where('class_id', $request->class_id)->get();
+        return response()->json(['sections' => $sections]);
+    }
+
+    //Store Students
+    public function store_students(Request $request)
+    {
+        $request->validate([
+            'f_name' => 'required|string|max:255',
+            'l_name' => 'required|string|max:255',
+            'about' => 'nullable|string',
+            'pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gender' => 'required|string',
+            'blood_group' => 'required|string',
+            'religion' => 'nullable|string|max:255',
+            'date_of_birth' => 'required|date',
+            'email' => 'nullable|email|max:255',
+            'admission_id' => 'required|',
+            'class_id' => 'required|exists:classes,id',
+            'section_id' => 'required|exists:sections,id',
+            'parent_id' => 'required|exists:parents,id',
+            'roll' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
+        ]);
+
+        $student = new Student();
+        $student->f_name = $request->f_name;
+        $student->l_name = $request->l_name;
+        $student->about = $request->about;
+        $student->gender = $request->gender;
+        $student->religion = $request->religion;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->blood_group = $request->blood_group;
+        $student->admission_id = $request->admission_id;
+        $student->email = $request->email;
+        $student->class_id = $request->class_id;
+        $student->section_id = $request->section_id;
+        $student->parent_id = $request->parent_id;
+        $student->roll = $request->roll;
+        $student->phone = $request->phone;
+
+
+        $image = $request->pic;
+        if($image){
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->pic->move('students',$imagename);
+            $student->pic = $imagename;
+        }
+
+        $student->save();
+
+        return redirect()->route('add_students')->with('success', 'Student added successfully.');
+    }
+
+    //Show Students by Sections
+    public function show_students(string $id)
+    {
+        $section = Section::with('classes')->findOrFail($id);
+        $students = Student::with('parents')->where('section_id', $id)->get();
+    
+        return view('student.show_students', compact('section', 'students'));
+
+    }
+
+    //Show Student Details
+    public function student_details (string $id){
+        $student = Student::with('classes','sections','parents')->findOrFail($id);
+        return view('student.student_details',compact('student'));
+    }
+
+    //To Edit Students
+    public function edit_students(string $id)
+    {
+        $students = Student::findOrFail($id);
+
+        return view('student.edit_students',compact('students'));
+    }
+    
+
+    //Update Students
+    public function update_students(Request $request, string $id)
+    {
+        $request->validate([
+            'f_name' => 'required|string|max:255',
+            'l_name' => 'required|string|max:255',
+            'about' => 'nullable|string',
+            'pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gender' => 'required|string',
+            'blood_group' => 'required|string',
+            'religion' => 'nullable|string|max:255',
+            'date_of_birth' => 'required|date',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+        ]);
+
+        $student = Student::findOrFail($id);
+
+        $student->f_name = $request->f_name;
+        $student->l_name = $request->l_name;
+        $student->about = $request->about;
+        $student->gender = $request->gender;
+        $student->religion = $request->religion;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->blood_group = $request->blood_group;
+        $student->email = $request->email;
+        $student->phone = $request->phone;
+
+        $image = $request->pic;
+        if($image){
+            if ($student->pic) {
+                Storage::delete('students' . $student->pic);
+            }
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->pic->move('students',$imagename);
+            $student->pic = $imagename;
+        }
+
+        $student->save();
+
+        return redirect()->back()
+                     ->with('status', "Student Updated");
+
+        // return redirect()->route('admin.all_classes')->with('status', 'Section updated successfully!');
+    }
+    
+   // Delete Student
+    public function destroy_students(string $id)
+    {
+    
+        Student::destroy($id);
+    
+        return redirect()->back()
+                        ->with('status', "Student Deleted");
+    }
+
+
+    //Parents
+
+    // All Students
+    public function all_parents()
+    {
+        $parents = Parents::all();
+        return view('parent.all_parents',compact('parents'));
+    }
+
+    //To Add Parents
+    public function add_parent()
+    {
+        return view('parent.add_parent');
+    }
+
+    //Store Parents
+    public function store_parents(Request $request)
+    {
+        $request->validate([
+            'f_name' => 'required|string|max:255',
+            'l_name' => 'required|string|max:255',
+            'about' => 'nullable|string',
+            'pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gender' => 'required|string',
+            'blood_group' => 'required|string',
+            'religion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'address' => 'required|',
+            'occupation' => 'required|',
+            'phone' => 'nullable|string|max:255',
+        ]);
+
+        // Fetch the latest registration number and increment it
+        $latestParent = Parents::orderBy('id', 'desc')->first();
+        
+        if ($latestParent) {
+            // Extract the numeric part of the registration number
+            $latestNumber = intval(substr($latestParent->reg_no, -4));
+            $number = $latestNumber + 1;
+        } else {
+            // Start with 1 if no previous records exist
+            $number = 1;
+        }
+        
+        // Generate the new registration number
+        $reg_no = 'PARENT-' . now()->format('Ymd') . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+
+        $parent = new Parents();
+        $parent->reg_no = $reg_no;
+        $parent->f_name = $request->f_name;
+        $parent->l_name = $request->l_name;
+        $parent->about = $request->about;
+        $parent->gender = $request->gender;
+        $parent->religion = $request->religion;
+        $parent->blood_group = $request->blood_group;
+        $parent->email = $request->email;
+        $parent->address = $request->address;
+        $parent->occupation = $request->occupation;
+        $parent->phone = $request->phone;
+
+
+        $image = $request->pic;
+        if($image){
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->pic->move('parents',$imagename);
+            $parent->pic = $imagename;
+        }
+
+        $parent->save();
+
+        return redirect()->route('add_parent')->with('success', 'Parent added successfully.');
+    }
+
+    //Show Parents Details
+    public function parent_details (string $id){
+        $parent = Parents::findOrFail($id);
+        return view('parent.parent_details',compact('parent'));
+    }
+
+    //To Edit Parents
+    public function edit_parents(string $id)
+    {
+        $parent = Parents::findOrFail($id);
+
+        return view('parent.edit_parents',compact('parent'));
+    }
+
+    //Update Parents
+    public function update_parents(Request $request, string $id)
+    {
+        $request->validate([
+            'f_name' => 'required|string|max:255',
+            'l_name' => 'required|string|max:255',
+            'about' => 'nullable|string',
+            'pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gender' => 'required|string',
+            'blood_group' => 'required|string',
+            'religion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'address' => 'required|',
+            'occupation' => 'required|',
+            'phone' => 'nullable|string|max:255',
+        ]);
+
+        $parent = Parents::findOrFail($id);
+        $parent->f_name = $request->f_name;
+        $parent->l_name = $request->l_name;
+        $parent->about = $request->about;
+        $parent->gender = $request->gender;
+        $parent->religion = $request->religion;
+        $parent->blood_group = $request->blood_group;
+        $parent->email = $request->email;
+        $parent->address = $request->address;
+        $parent->occupation = $request->occupation;
+        $parent->phone = $request->phone;
+
+
+        $image = $request->pic;
+        if($image){
+            if ($parent->pic) {
+                Storage::delete('parents' . $parent->pic);
+            }
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->pic->move('parents',$imagename);
+            $parent->pic = $imagename;
+        }
+
+        $parent->save();
+
+        return redirect()->route('all_parents')
+                     ->with('status', "Parent Updated");
+
+    }
+
+    // Delete Parents
+    public function destroy_parents(string $id)
+    {
+    
+        Parents::destroy($id);
+    
+        return redirect()->back()
+                        ->with('status', "Parent Deleted");
+    }
+
+    // public function show_parents(string $id)
+    // {
+    //     //
+    // }
+    // public function edit_parents(string $id)
+    // {
+    //     //
+    // }
+    // public function update_parents(Request $request, string $id)
+    // {
+    //     //
+    // }
+    // public function destroy_parents(string $id)
+    // {
+    //     //
+    // }
+
+    // //Teacher
+    // public function to_teacher()
+    // {
+    //     //
+    // }
+    // public function add_teachers()
+    // {
+    //     //
+    // }
+    // public function show_teachers(string $id)
+    // {
+    //     //
+    // }
+    // public function edit_teachers(string $id)
+    // {
+    //     //
+    // }
+    // public function update_teachers(Request $request, string $id)
+    // {
+    //     //
+    // }
+    // public function destroy_teachers(string $id)
+    // {
+    //     //
+    // }
+
+    // //Subjects
+    // public function to_subject()
+    // {
+    //     //
+    // }
+    // public function add_subjects()
+    // {
+    //     //
+    // }
+    // public function show_subjects(string $id)
+    // {
+    //     //
+    // }
+    // public function edit_subjects(string $id)
+    // {
+    //     //
+    // }
+    // public function update_subjects(Request $request, string $id)
+    // {
+    //     //
+    // }
+    // public function destroy_subjects(string $id)
+    // {
+    //     //
+    // }
+
+
+    
+    
+  
+
+   
+
+    // //Events
+    // public function to_event()
+    // {
+    //     //
+    // }
+    // public function add_events()
+    // {
+    //     //
+    // }
+    // public function show_events(string $id)
+    // {
+    //     //
+    // }
+    // public function edit_events(string $id)
+    // {
+    //     //
+    // }
+    // public function update_events(Request $request, string $id)
+    // {
+    //     //
+    // }
+    // public function destroy_events(string $id)
+    // {
+    //     //
+    // }
+
+    public function index(){
+        return view('admin.index');
+    }
+    public function student(){
+        return view('admin.index3');
+    }
+    
+    public function teacher(){
+        return view('admin.index5');
+    }
+
+
+    // public function all_student(){
+    //     return view('student.all_student');
+    // }
+    // public function student_details(){
+    //     return view('student.student_details');
+    // }
+    // public function admission_form(){
+    //     return view('student.admission_form');
+    // }
+    // public function student_promotion(){
+    //     return view('student.student_promotion');
+    // }
+
+
+    public function all_teachers(){
+        return view('teacher.all_teachers');
+    }
+    public function teacher_details(){
+        return view('teacher.teacher_details');
+    }
+    public function add_teacher(){
+        return view('teacher.add_teacher');
+    }
+    public function teacher_payment(){
+        return view('teacher.teacher_payment');
+    }
+
+
+    // public function all_parents(){
+    //     return view('parent.all_parents');
+    // }
+    // public function add_parent(){
+    //     return view('parent.add_parent');
+    // }
+    // public function parent_details(){
+    //     return view('parent.parent_details');
+    // }
+
+
+    public function all_books(){
+        return view('library.all_books');
+    }
+    public function add_book(){
+        return view('library.add_book');
+    }
+    
+    
+    public function all_expense(){
+        return view('account.all_expense');
+    }
+    public function all_fees(){
+        return view('account.all_fees');
+    }
+    public function add_expense(){
+        return view('account.add_expense');
+    }
+    
+    
+    // public function add_class(){
+    //     return view('class.add_class');
+    // }
+    // public function all_classes(){
+    //     return view('class.all_classes');
+    // }
+
+
+    public function all_subjects(){
+        return view('subject.all_subjects');
+    }
+
+
+    public function class_routine(){
+        return view('class-routine.class_routine');
+    }
+   
+   
+    public function student_attendence(){
+        return view('student-attendence.student_attendence');
+    }
+   
+   
+    public function exam_schedule(){
+        return view('exam.exam_schedule');
+    }
+    public function exam_grade(){
+        return view('exam.exam_grade');
+    }
+    
+    public function transport(){
+        return view('transport.transport');
+    }
+
+
+    public function hostel(){
+        return view('hostel.hostel');
+    }
+
+
+    public function notice(){
+        return view('notice.notice');
+    }
+    
+    
+    public function message(){
+        return view('message.message');
+    }
+}
