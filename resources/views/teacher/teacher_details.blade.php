@@ -5,7 +5,7 @@
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Teacher</h3>
+        <h3>Teachers</h3>
         <ul>
             <li>
                 <a href="{{url('index')}}">Home</a>
@@ -14,7 +14,7 @@
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
-    <!-- Student Table Area Start Here -->
+    <!-- teacher Details Area Start Here -->
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
@@ -27,83 +27,70 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_teacher',$teacher->user_id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a> 
                     </div>
                 </div>
             </div>
             <div class="single-info-details">
                 <div class="item-img">
-                    <img src="{{asset('assets/img/figure/teacher.jpg')}}" alt="teacher">
+                    @if($teacher->pic)
+                    <img src="{{ asset('teacher/' . $teacher->pic) }}" alt="{{ $teacher->f_name }}" style="width: 300px; height: 300px;">
+                @else
+                    No Photo
+                @endif
+                {{-- </div>
+                <div class="item-img"> --}}
+                    @if($teacher->doc_pic)
+                    <img src="{{ asset('teacher/' . $teacher->doc_pic) }}" alt="document-pic" style="width: 300px; height: 300px;">
+                @else
+                    No Photo
+                @endif
                 </div>
                 <div class="item-content">
                     <div class="header-inline item-header">
-                        <h3 class="text-dark-medium font-medium">Steven Johnson</h3>
-                        <div class="header-elements">
-                            <ul>
-                                <li><a href="#"><i class="far fa-edit"></i></a></li>
-                                <li><a href="#"><i class="fas fa-print"></i></a></li>
-                                <li><a href="#"><i class="fas fa-download"></i></a></li>
-                            </ul>
-                        </div>
+                        <h3 class="text-dark-medium font-medium">{{$teacher->f_name}} {{$teacher->l_name}}</h3>
+                
                     </div>
-                    <p>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale 
-                    word moun taiery.Aliquam erat volutpaturabiene natis massa sedde  sodale 
-                    word moun taiery.</p>
+
                     <div class="info-table table-responsive">
                         <table class="table text-nowrap">
                             <tbody>
                                 <tr>
                                     <td>Name:</td>
-                                    <td class="font-medium text-dark-medium">Steven Johnson</td>
+                                    <td class="font-medium text-dark-medium">{{$teacher->f_name}} {{$teacher->l_name}}</td>
                                 </tr>
                                 <tr>
                                     <td>Gender:</td>
-                                    <td class="font-medium text-dark-medium">Male</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->gender }}</td>
                                 </tr>
+
                                 <tr>
-                                    <td>Father Name:</td>
-                                    <td class="font-medium text-dark-medium">Steve Jones</td>
-                                </tr>
-                                <tr>
-                                    <td>Mother Name:</td>
-                                    <td class="font-medium text-dark-medium">Naomi Rose</td>
+                                    <td>Date Of Birth:</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->date_of_birth }}</td>
                                 </tr>
                                 <tr>
                                     <td>Religion:</td>
-                                    <td class="font-medium text-dark-medium">Islam</td>
-                                </tr>
-                                <tr>
-                                    <td>Joining Date:</td>
-                                    <td class="font-medium text-dark-medium">07.08.2016</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->religion }}</td>
                                 </tr>
                                 <tr>
                                     <td>E-mail:</td>
-                                    <td class="font-medium text-dark-medium">stevenjohnson@gmail.com</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->email }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Subject:</td>
-                                    <td class="font-medium text-dark-medium">English</td>
+                                    <td>Mobile Number:</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->mob_no }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Class:</td>
-                                    <td class="font-medium text-dark-medium">2</td>
+                                    <td>Phone Number:</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->phone_no }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Section:</td>
-                                    <td class="font-medium text-dark-medium">Pink</td>
-                                </tr>
-                                <tr>
-                                    <td>ID No:</td>
-                                    <td class="font-medium text-dark-medium">10005</td>
+                                    <td>Salary</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->salary }}</td>
                                 </tr>
                                 <tr>
                                     <td>Address:</td>
-                                    <td class="font-medium text-dark-medium">House #10, Road #6, Australia</td>
-                                </tr>
-                                <tr>
-                                    <td>Phone:</td>
-                                    <td class="font-medium text-dark-medium">+ 88 98568888418</td>
+                                    <td class="font-medium text-dark-medium">{{ $teacher->address }}</td>
                                 </tr>
                             </tbody>
                         </table>

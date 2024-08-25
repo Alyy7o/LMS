@@ -19,4 +19,10 @@ class Section extends Model
     public function students(){
         return $this->hasMany(Student::class, 'student_id');
     }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'section_teacher');
+    }
+
 }

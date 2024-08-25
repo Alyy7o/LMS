@@ -1,139 +1,168 @@
 @extends('layout.main')
 
 @section('content')
-
 <div class="dashboard-content-one">
-    <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Teacher</h3>
+        <h3>Add Teacher</h3>
         <ul>
             <li>
                 <a href="{{url('index')}}">Home</a>
             </li>
-            <li>Add New Teacher</li>
+            <li>Teacher Admit Form</li>
         </ul>
     </div>
-    <!-- Breadcubs Area End Here -->
-    <!-- Add New Teacher Area Start Here -->
+
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
                     <h3>Add New Teacher</h3>
                 </div>
-               <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" 
-                    data-toggle="dropdown" aria-expanded="false">...</a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                    </div>
-                </div>
             </div>
-            <form class="new-added-form">
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <form action="{{ route('store_teacher') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>First Name *</label>
-                        <input type="text" placeholder="" class="form-control">
+
+                    <input type="number" value="{{ auth()->user()->id }}" name="owner_id" hidden>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group">
+                        <label>First Name: </label>
+                        <input type="text" class="form-control" id="f_name" name="f_name" value="{{ old('f_name') }}" required>
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Last Name *</label>
-                        <input type="text" placeholder="" class="form-control">
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group">
+                        <label>Last Name: </label>
+                        <input type="text" class="form-control" id="l_name" name="l_name" value="{{ old('l_name') }}" required>
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Gender *</label>
-                        <select class="select2">
-                            <option value="">Please Select Gender *</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Others</option>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="cnic">CNIC: </label>
+                        <input type="number" maxlength="13" class="form-control" id="cnic" name="cnic" value="{{ old('cnic') }}" required>
+                    </div>
+
+                    <div class="col-lg-12 col-12 form-group mt-2">
+                        <label class="text-dark-medium">Upload Admin Photo:</label>
+                        {{-- <input type="file" class="form-control-file"> --}}
+                        <input type="file" class="form-control-file" id="pic" name="pic" value="{{ old('pic') }}">
+
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="gender">Gender: </label>
+                        <select class="form-control" id="gender" name="gender" required>
+                            <option value="">Please Select Gender</option>
+                            <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                            <option value="Others" {{ old('gender') == 'Others' ? 'selected' : '' }}>Others</option>
                         </select>
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Date Of Birth *</label>
-                        <input type="text" placeholder="dd/mm/yyyy" class="form-control air-datepicker">
-                        <i class="far fa-calendar-alt"></i>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="date_of_birth">Date Of Birth: </label>
+                            <input type="date" data-position='bottom right' placeholder="dd/mm/yyyy" class="form-control air-datepicker" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required>
+                        
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>ID No</label>
-                        <input type="text" placeholder="" class="form-control">
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Blood Group *</label>
-                        <select class="select2">
-                            <option value="">Please Select Group *</option>
-                            <option value="1">A+</option>
-                            <option value="2">A-</option>
-                            <option value="3">B+</option>
-                            <option value="3">B-</option>
-                            <option value="3">O+</option>
-                            <option value="3">O-</option>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="blood_group">Blood Group </label>
+                        <select class="form-control" id="blood_group" name="blood_group" required>
+                            <option value="">Please Select Group </option>
+                            <option value="A+" {{ old('blood_group') == 'A+' ? 'selected' : '' }}>A+</option>
+                            <option value="A-" {{ old('blood_group') == 'A-' ? 'selected' : '' }}>A-</option>
+                            <option value="B+" {{ old('blood_group') == 'B+' ? 'selected' : '' }}>B+</option>
+                            <option value="B-" {{ old('blood_group') == 'B-' ? 'selected' : '' }}>B-</option>
+                            <option value="O+" {{ old('blood_group') == 'O+' ? 'selected' : '' }}>O+</option>
+                            <option value="O-" {{ old('blood_group') == 'O-' ? 'selected' : '' }}>O-</option>
+                            <option value="AB+" {{ old('blood_group') == 'AB+' ? 'selected' : '' }}>AB+</option>
+                            <option value="AB-" {{ old('blood_group') == 'AB-' ? 'selected' : '' }}>AB-</option>
                         </select>
                     </div>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="religion">Religion </label>
+                        <input type="text" class="form-control" id="religion" name="religion" value="{{ old('religion') }}">
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="email">E-Mail:</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="email">Password:</label>
+                        <input type="text" class="form-control" id="password" name="password" value="{{ old('password') }}" required>
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="mob_no">Mobile Number:</label>
+                        <input type="text" class="form-control" id="mob_no" name="mob_no" value="{{ old('mob_no') }}" required>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label for="phone_no">Phone Number: </label>
+                        <input type="text" class="form-control" id="phone_no" name="phone_no" value="{{ old('phone_no') }}" required>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
+                        <label for="salary">Salary: </label>
+                        <input type="number" class="form-control" id="salary" name="salary" value="{{ old('salary') }}" required>
+                    </div>
+
+                    <div class="col-lg-12 col-12 form-group mt-3">
+                        <label for="address">Address:</label>
+                        <textarea class="textarea form-control" name="address" id="form-message address" cols="10"
+                            rows="9">{{ old('address') }}</textarea>
+                        
+                    </div>
+
+                    <div class="col-lg-12 col-12 form-group my-3">
+                        <label class="text-dark-medium">Upload Document Photo:</label>
+                        {{-- <input type="file" class="form-control-file"> --}}
+                        <input type="file" class="form-control-file" id="doc_pic" name="doc_pic" value="{{ old('doc_pic') }}">
+
+                    </div>
+
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Religion *</label>
-                        <select class="select2">
-                            <option value="">Please Select Religion *</option>
-                            <option value="1">Islam</option>
-                            <option value="2">Hindu</option>
-                            <option value="3">Christian</option>
-                            <option value="3">Buddish</option>
-                            <option value="3">Others</option>
-                        </select>
+                        <label>Select Classes</label>
+                        @foreach($classes as $class)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="classes[]" value="{{ $class->id }}" id="class_{{ $class->id }}">
+                                <label class="form-check-label" for="class_{{ $class->id }}">
+                                    {{ $class->name }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
+                    
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>E-Mail</label>
-                        <input type="email" placeholder="" class="form-control">
+                        <label>Select Sections</label>
+                        @foreach($sections as $section)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="sections[]" value="{{ $section->id }}" id="section_{{ $section->id }}">
+                                <label class="form-check-label" for="section_{{ $section->id }}">
+                                    {{ $section->name }}({{ $section->classes->name }})
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Class *</label>
-                        <select class="select2">
-                            <option value="">Please Select Class *</option>
-                            <option value="1">Play</option>
-                            <option value="2">Nursery</option>
-                            <option value="3">One</option>
-                            <option value="3">Two</option>
-                            <option value="3">Three</option>
-                            <option value="3">Four</option>
-                            <option value="3">Five</option>
-                        </select>
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Section *</label>
-                        <select class="select2">
-                            <option value="">Please Select Section *</option>
-                            <option value="1">Pink</option>
-                            <option value="2">Blue</option>
-                            <option value="3">Bird</option>
-                            <option value="3">Rose</option>
-                            <option value="3">Red</option>
-                        </select>
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Address</label>
-                        <input type="text" placeholder="" class="form-control">
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Phone</label>
-                        <input type="text" placeholder="" class="form-control">
-                    </div>
-                    <div class="col-lg-6 col-12 form-group">
-                        <label>Short BIO</label>
-                        <textarea class="textarea form-control" name="message" id="form-message" cols="10" rows="9"></textarea>
-                    </div>
-                    <div class="col-lg-6 col-12 form-group mg-t-30">
-                        <label class="text-dark-medium">Upload Student Photo (150px X 150px)</label>
-                        <input type="file" class="form-control-file">
-                    </div>
+                                      
                     <div class="col-12 form-group mg-t-8">
                         <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                        <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    
+</div>
 @endsection

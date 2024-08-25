@@ -13,29 +13,20 @@ use Illuminate\Support\Facades\Storage;
 class AdminController extends Controller
 {
 
-    //Parents
-    // public function parent()
-    // {
-    //     return view('admin.parents');
-    // }
-    // public function add_parents(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required | string',
-    //         'email' => 'required | email',
-    //         'pass' => 'required | min:8', 
-    //     ]);
+    public function indexx(){
+        return view('admin.index');
+    }
 
-    //     Admin::create([
-    //         'name'=> $request->name,
-    //         'email'=> $request->email,
-    //         'password'=> $request->pass,
-    //     ]);
-
-    //     return redirect()->route('admin.index')
-    //             ->with('status',"Record Added Successfully!");
-    // }
-
+    public function student(){
+        return view('admin.index3');
+    }
+    public function teacher(){
+        return view('admin.index5');
+    }
+    public function parent(){
+        return view('admin.parents');
+    }
+    
 
 
     // Classes
@@ -66,7 +57,7 @@ class AdminController extends Controller
         $class->save();
 
         return redirect()->route('admin.all_classes')
-                ->with('status',"Class Added Successfully!");
+                ->with('success',"Class Added Successfully!");
     }
 
     // View All Classes
@@ -95,7 +86,7 @@ class AdminController extends Controller
         $class->name = $request->name;
         $class->save();
 
-        return redirect()->route('admin.all_classes')->with('status', 'Class updated successfully!');
+        return redirect()->route('admin.all_classes')->with('success', 'Class updated successfully!');
     }
 
     // Delete Class
@@ -130,7 +121,7 @@ class AdminController extends Controller
         'class_id' => $request->class_id,
     ]);
 
-    return redirect()->route('add_section')->with('status', 'Section Added Successfully!');
+    return redirect()->route('add_section')->with('success', 'Section Added Successfully!');
 }
 
 // View Section
@@ -159,7 +150,7 @@ public function update_section(Request $request, string $id)
     $section->name = $request->name;
     $section->save();
 
-    return redirect()->route('admin.all_classes')->with('status', 'Section updated successfully!');
+    return redirect()->route('admin.all_classes')->with('success', 'Section updated successfully!');
 }
 
 // Delete Section
@@ -314,10 +305,9 @@ public function destroy_section(string $id)
 
         $student->save();
 
-        return redirect()->back()
-                     ->with('status', "Student Updated");
+        return redirect()->route('all_students')
+                     ->with('success', "Student Updated Successfully!");
 
-        // return redirect()->route('admin.all_classes')->with('status', 'Section updated successfully!');
     }
     
    // Delete Student
@@ -333,7 +323,7 @@ public function destroy_section(string $id)
 
     //Parents
 
-    // All Students
+    // All Parents
     public function all_parents()
     {
         $parents = Parents::all();
@@ -401,7 +391,7 @@ public function destroy_section(string $id)
 
         $parent->save();
 
-        return redirect()->route('add_parent')->with('success', 'Parent added successfully.');
+        return redirect()->route('all_parents')->with('success', 'Parent Added Successfully.');
     }
 
     //Show Parents Details
@@ -461,7 +451,7 @@ public function destroy_section(string $id)
         $parent->save();
 
         return redirect()->route('all_parents')
-                     ->with('status', "Parent Updated");
+                     ->with('success', "Parent Updated Successfully!");
 
     }
 
@@ -474,49 +464,8 @@ public function destroy_section(string $id)
         return redirect()->back()
                         ->with('status', "Parent Deleted");
     }
+   
 
-    // public function show_parents(string $id)
-    // {
-    //     //
-    // }
-    // public function edit_parents(string $id)
-    // {
-    //     //
-    // }
-    // public function update_parents(Request $request, string $id)
-    // {
-    //     //
-    // }
-    // public function destroy_parents(string $id)
-    // {
-    //     //
-    // }
-
-    // //Teacher
-    // public function to_teacher()
-    // {
-    //     //
-    // }
-    // public function add_teachers()
-    // {
-    //     //
-    // }
-    // public function show_teachers(string $id)
-    // {
-    //     //
-    // }
-    // public function edit_teachers(string $id)
-    // {
-    //     //
-    // }
-    // public function update_teachers(Request $request, string $id)
-    // {
-    //     //
-    // }
-    // public function destroy_teachers(string $id)
-    // {
-    //     //
-    // }
 
     // //Subjects
     // public function to_subject()
@@ -577,16 +526,7 @@ public function destroy_section(string $id)
     //     //
     // }
 
-    public function index(){
-        return view('admin.index');
-    }
-    public function student(){
-        return view('admin.index3');
-    }
     
-    public function teacher(){
-        return view('admin.index5');
-    }
 
 
     // public function all_student(){
@@ -601,20 +541,6 @@ public function destroy_section(string $id)
     // public function student_promotion(){
     //     return view('student.student_promotion');
     // }
-
-
-    public function all_teachers(){
-        return view('teacher.all_teachers');
-    }
-    public function teacher_details(){
-        return view('teacher.teacher_details');
-    }
-    public function add_teacher(){
-        return view('teacher.add_teacher');
-    }
-    public function teacher_payment(){
-        return view('teacher.teacher_payment');
-    }
 
 
     // public function all_parents(){
@@ -646,14 +572,6 @@ public function destroy_section(string $id)
         return view('account.add_expense');
     }
     
-    
-    // public function add_class(){
-    //     return view('class.add_class');
-    // }
-    // public function all_classes(){
-    //     return view('class.all_classes');
-    // }
-
 
     public function all_subjects(){
         return view('subject.all_subjects');

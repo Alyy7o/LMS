@@ -14,15 +14,12 @@ class RolebaseMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $Rolebase): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if ( Auth::user()->role == $Rolebase) {
+        if (in_array(Auth::user()->role, $roles)) {
             return $next($request);
         }
-        else{
 
-            return redirect('/')->with('error', 'You are not admin.');
-        }
-        
-    }
+        return redirect('/')->with('error', 'You do not have permission to access this page.');
+    }   
 }

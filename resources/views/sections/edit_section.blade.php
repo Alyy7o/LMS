@@ -8,7 +8,7 @@
             <li>
                 <a href="{{url('index.php')}}">Home</a>
             </li>
-            <li>Update Section</li>
+            <li>Edit Section</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -23,7 +23,7 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>Update Section</h3>
+                    <h3>Edit Section</h3>
                 </div>
               
             </div>

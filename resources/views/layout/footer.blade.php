@@ -70,8 +70,9 @@
     });
     
 
-</script>
 
+
+ </script>
 <!-- jquery-->
 <script src="{{asset('assets/js/jquery-3.3.1.min.js')}}"></script>
 <!-- Plugins js -->
@@ -96,6 +97,7 @@
 <script src="{{asset('assets/js/main.js')}}"></script>
 <!-- Include Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 
 </body>
 

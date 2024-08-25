@@ -12,9 +12,9 @@
             </li>
             <li>Parents</li>
         </ul>
-    </div>
+    </div> 
     <!-- Breadcubs Area End Here -->
-    {{-- <!-- Dashboard summery Start Here -->
+     <!-- Dashboard summery Start Here -->
     <div class="row">
         <div class="col-3-xxxl col-sm-6 col-12">
             <div class="dashboard-summery-one">
@@ -884,10 +884,10 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div> 
 
 
-    
+     
 <form action="{{url('admin.add_parent')}}" method="POST">
 
     @csrf

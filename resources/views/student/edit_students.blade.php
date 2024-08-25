@@ -37,7 +37,7 @@
             @csrf
             
             {{-- Update method for updation in Laravel --}}
-        @method('PUT')
+            @method('PUT')
 
                 <div class="row">
 

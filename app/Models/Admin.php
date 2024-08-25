@@ -18,15 +18,31 @@ class Admin extends Model
     // }   
 
     protected $fillable = [
+        'owner_id',
         'f_name',
         'l_name',
+        'cnic',
+        'pic',
         'gender',
-        'occupation',
+        'date_of_birth',
         'blood_group',
         'religion',
         'email',
+        'password',
+        'mob_no',
+        'phone_no',
         'address',
-        'phone',
-        'short_bio',
+        'salary',
+        'doc_pic',
     ];
+
+    // Relationship to the User who created the admin
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function teacher(){
+        return $this->hasMany(Teacher::class, 'admin_id');
+    }
 }

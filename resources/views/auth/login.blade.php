@@ -7,6 +7,8 @@
      <!-- Session Status -->
      <x-auth-session-status class="mb-4" :status="session('status')" />
 
+     
+
     <div class="login-page-wrap">
         <div class="login-page-content">
             <div class="login-box">
@@ -16,6 +18,13 @@
                 <form method="POST" action="{{ route('login') }}" class="login-form">
                     @csrf
                     
+                    @if (session('error'))
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                           {{ session('error') }}
+                        </div>
+                    @endif
+
                     {{-- Email --}}
                     <div class="form-group">
                         <label>Email</label>
@@ -37,20 +46,6 @@
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         <i class="fas fa-lock"></i>
                     </div>
-
-                    <!-- Role -->
-                    <div class="form-group">
-                        <x-input-label for="role" :value="__('Role')" />
-
-                        <x-text-input id="role" placeholder="Enter Role" class="form-control"
-                        type="text"
-                        name="role"
-                        required />
-
-                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
-                            <i class="fas fa-user-tag"></i>
-                    </div>
-
                     
                     <div class="form-group d-flex align-items-center justify-content-between">
                         <div class="form-check">

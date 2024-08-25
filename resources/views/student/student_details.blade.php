@@ -27,8 +27,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_students',$student->id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a> 
                     </div>
                 </div>
             </div>
@@ -44,11 +43,7 @@
                     <div class="header-inline item-header">
                         <h3 class="text-dark-medium font-medium">{{$student->f_name}} {{$student->l_name}}</h3>
                         <div class="header-elements">
-                            <ul>
-                                <li><a href="#"><i class="far fa-edit"></i></a></li>
-                                <li><a href="#"><i class="fas fa-print"></i></a></li>
-                                <li><a href="#"><i class="fas fa-download"></i></a></li>
-                            </ul>
+                            
                         </div>
                     </div>
                     <p>{{ $student->about }}</p>

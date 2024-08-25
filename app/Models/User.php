@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Admin;
+use App\Models\Owner;
+use App\Models\SuperAdmin;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -44,5 +47,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role; // Assuming `role` is a column in your `users` table
+    }
+    
+    public function super_admin()
+    {
+        return $this->hasOne(SuperAdmin::class, 'owner_id');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne(Owner::class, 'owner_id');
+    }
+    
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'admin_id');
     }
 }

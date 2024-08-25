@@ -47,8 +47,8 @@
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
                             <div class="admin-title">
-                                <h5 class="item-title">Stevne Zone</h5>
-                                <span>Admin</span>
+                                <h5 class="item-title">{{ auth()->user()->name }}</h5>
+                                <span>{{ auth()->user()->role }}</span>
                             </div>
                             <div class="admin-img">
                                 <img src="{{asset('assets/img/figure/admin.jpg')}}" alt="Admin">
@@ -217,27 +217,128 @@
                              <a href="{{url('index')}}"><img src="{{asset('img/logo1.png')}}" alt="logo"></a>
                          </div>
                     </div>
+
                      <div class="sidebar-menu-content">
                          <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+
+                            
+                    @if (Auth::user()->role === 'super_admin')
+
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{{url('index')}}" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Owner</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{{url('all_owner')}}" class="nav-link"><i class="fas fa-angle-right"></i>Owner List</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('add_owner')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Owner Form</a>
+                                    </li>
+                                   
+                                </ul>
+                            </li>
+                    @endif
+
+                    @if (Auth::user()->role === 'owner')
+
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{{url('indexx')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Admin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('student')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Students</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('parent')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Parents</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('teacher')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Teachers</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i
+                                        class="flaticon-multiple-users-silhouette"></i><span>Admins</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{{url('all_admin')}}" class="nav-link"><i class="fas fa-angle-right"></i>
+                                            All Admins</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('add_admin')}}" class="nav-link"><i class="fas fa-angle-right"></i>
+                                            Admins Form</a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                    @endif 
+
+                             {{-- Admin --}}
+
+                    @if (Auth::user()->role === 'admin')
+
                              <li class="nav-item sidebar-nav-item">
-                                 <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                                 <ul class="nav sub-group-menu">
-                                     <li class="nav-item">
-                                         <a href="{{url('index')}}" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
-                                     </li>
-                                     <li class="nav-item">
-                                         <a href="{{url('student')}}" class="nav-link"><i
-                                                 class="fas fa-angle-right"></i>Students</a>
-                                     </li>
-                                     <li class="nav-item">
-                                         <a href="{{url('parent')}}" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
-                                     </li>
-                                     <li class="nav-item">
-                                         <a href="{{url('teacher')}}" class="nav-link"><i
-                                                 class="fas fa-angle-right"></i>Teachers</a>
-                                     </li>
-                                 </ul>
-                             </li>
+                                <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{{url('student')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Students</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('parent')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Parents</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('teacher')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Teachers</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            
+                    @endif 
+
+                            {{-- Owner And Admin --}}
+
+                    @if (Auth::user()->role === 'owner' || Auth::user()->role === 'admin')
+
+                                {{-- teacher --}}
+                             <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i
+                                        class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{{url('all_teachers')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                            Teachers</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('add_teacher')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                            Teacher</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('teacher_payment')}}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Payment</a>
+                                    </li>
+                                </ul>
+                            </li>
+                                 {{-- student --}}
                              <li class="nav-item sidebar-nav-item">
                                  <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
                                  <ul class="nav sub-group-menu">
@@ -255,28 +356,7 @@
                                      </li>
                                  </ul>
                              </li>
-                             <li class="nav-item sidebar-nav-item">
-                                 <a href="#" class="nav-link"><i
-                                         class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                                 <ul class="nav sub-group-menu">
-                                     <li class="nav-item">
-                                         <a href="{{url('all_teachers')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                             Teachers</a>
-                                     </li>
-                                     <li class="nav-item">
-                                         <a href="{{url('teacher_details')}}" class="nav-link"><i
-                                                 class="fas fa-angle-right"></i>Teacher Details</a>
-                                     </li>
-                                     <li class="nav-item">
-                                         <a href="{{url('add_teacher')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                             Teacher</a>
-                                     </li>
-                                     <li class="nav-item">
-                                         <a href="{{url('teacher_payment')}}" class="nav-link"><i
-                                                 class="fas fa-angle-right"></i>Payment</a>
-                                     </li>
-                                 </ul>
-                             </li>
+                                    {{-- Parent --}}
                              <li class="nav-item sidebar-nav-item">
                                  <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                                  <ul class="nav sub-group-menu">
@@ -378,6 +458,9 @@
                                  <a href="{{url('message')}}" class="nav-link"><i
                                          class="flaticon-chat"></i><span>Messeage</span></a>
                              </li>
+
+                    @endif
+
                              
                          </ul>
                      </div>
