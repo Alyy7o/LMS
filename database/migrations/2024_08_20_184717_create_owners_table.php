@@ -19,6 +19,7 @@ return new class extends Migration
                 ->unique()
                 ->cascadeOnDelete();
             $table->string('status')->default('active');
+            $table->timestamp('activated_at')->nullable()->after('status');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');

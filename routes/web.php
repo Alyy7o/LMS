@@ -32,12 +32,14 @@ Route::middleware('auth','isAdmin:super_admin')->group( function () {
     Route::post('store_owner', [SuperAdminController::class, 'store_owner'])->name('store_owner');
     Route::get('all_owner', [SuperAdminController::class, 'all_owner'])->name('all_owner');
     Route::put('update_owner_status/{id}', [SuperAdminController::class, 'updateOwnerStatus'])->name('update_owner_status');
-    Route::get('edit_owner/{id}', [SuperAdminController::class, 'edit_owner'])->name('edit_owner');
-    Route::put('update_owner/{id}', [SuperAdminController::class, 'update_owner'])->name('update_owner');
     Route::delete('destroy_owner/{id}', [SuperAdminController::class, 'destroy_owner'])->name('destroy_owner');
-
+    
 })->name('super_admin');
 
+Route::middleware('auth','isAdmin:super_admin,owner')->group( function () {
+    Route::get('edit_owner/{id}', [SuperAdminController::class, 'edit_owner'])->name('edit_owner');
+    Route::put('update_owner/{id}', [SuperAdminController::class, 'update_owner'])->name('update_owner');
+});
 
 Route::middleware('auth','isAdmin:owner')->group( function () {
     

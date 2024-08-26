@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Owner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,7 +29,23 @@ class SuperAdminController extends Controller
     public function updateOwnerStatus(Request $request, $id)
     {
         $owner = Owner::find($id);
+
+        // Update the status
         $owner->status = $request->input('status');
+
+        // Check if the status is being set to 'active'
+        if ($owner->status === 'active') {
+            
+            if (is_null($owner->activated_at)) {
+                $owner->activated_at = now();
+            }
+        } 
+
+        else
+        {
+
+            $owner->activated_at = null;
+        }        
         $owner->save();
 
         return redirect()->back()->with('success', 'Owner Status Updated Successfully.');
@@ -110,7 +127,7 @@ class SuperAdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email',    
+            'email' => 'required|string|email',   
             'tele_no' => 'required|string|max:20',
             'mob_no' => 'required|string|max:20',
             'school_name' => 'required|string|max:255',
@@ -124,6 +141,7 @@ class SuperAdminController extends Controller
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->password = Hash::make($request->password);
 
         $user->save();
 
@@ -134,6 +152,7 @@ class SuperAdminController extends Controller
             
             $owner->name = $request->name;
             $owner->email = $request->email;
+            $owner->password = Hash::make($request->password);
             $owner->tele_no = $request->tele_no;
             $owner->mob_no = $request->mob_no;
             $owner->school_name = $request->school_name;
@@ -152,9 +171,15 @@ class SuperAdminController extends Controller
     
             $owner->save();
 
-            
-        return redirect()->route('all_owner')
+            if(Auth::user()->role === 'owner'){
+                return redirect()->back()
                      ->with('success', "Owner Updated Successfully!");
+            }
+            else{
+
+                return redirect()->route('all_owner')
+                        ->with('success', "Owner Updated Successfully!");
+            }
 
     }
 }
