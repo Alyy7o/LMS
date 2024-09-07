@@ -34,7 +34,9 @@
                 <div class="item-title">
                     <h3>Add New Students</h3>
                 </div>
-                
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_students')}}">All Students</a>
+                </div> 
             </div>
 
              @if ($errors->any())
@@ -60,15 +62,9 @@
                         <input type="text" class="form-control" id="l_name" name="l_name" value="{{ old('l_name') }}" required>
                     </div>
 
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label for="gender">Parent </label>
-                        <select id="parent_id" name="parent_id" class="js-states form-control">
-                            <option value="">Select Parent</option>
-                            @foreach ($parents as $parent)      
-                            <option value="{{ $parent->id }} {{ old('parent_id') == ' $parent->reg_no ' ? 'selected' : '' }}"> {{ $parent->reg_no }} </option>
-                            @endforeach
-                            
-                          </select>
+                    <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
+                        <label for="date_of_birth">Date Of Birth </label>
+                            <input type="date" data-position='bottom right' placeholder="dd/mm/yyyy" class="form-control air-datepicker" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required>
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -81,10 +77,14 @@
                         </select>
                     </div>
 
-                    <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
-                        <label for="date_of_birth">Date Of Birth </label>
-                            <input type="date" data-position='bottom right' placeholder="dd/mm/yyyy" class="form-control air-datepicker" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required>
-                        
+                    <div class="col-xl-3 col-lg-6 col-12 form-group">
+                        <label for="gender">Parent </label>
+                        <select id="parent_id" name="parent_id" class="js-states form-control">
+                            <option value="">Select Parent</option>
+                            @foreach ($parents as $parent)      
+                            <option value="{{ $parent->id }} {{ old('parent_id') == ' $parent->reg_no ' ? 'selected' : '' }}"> {{ $parent->reg_no }} </option>
+                            @endforeach
+                          </select>
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
@@ -125,9 +125,7 @@
                         @foreach($classes as $class)
                             <option value="{{ $class->id }} {{ old('class-dd') == '$class->name' ? 'selected' : '' }}">{{ $class->name }}</option>
                         @endforeach
-                    </select>
-
-                        
+                        </select>     
                     </div>
                    
                     <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
@@ -151,7 +149,11 @@
                         <label for="about">Short BIO</label>
                         <textarea class="textarea form-control" name="about" id="form-message about" cols="10"
                             rows="9">{{ old('about') }}</textarea>
-                        
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
+                        <label>Fees</label>
+                        <input type="number" class="form-control" id="fee" name="fee" value="{{ old('fee') }}" required>
                     </div>
 
                     <div class="col-lg-6 col-12 form-group mg-t-30">
@@ -169,5 +171,5 @@
             </form>
         </div>
     </div>
-    
+
 @endsection

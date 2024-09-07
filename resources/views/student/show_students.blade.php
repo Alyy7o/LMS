@@ -21,6 +21,12 @@
                 <div class="item-title">
                     <h2>Students in Section: {{ $section->name }} (Class: {{ $section->classes->name }})</h2>
                 </div>
+                @if (Auth::user()->role === 'owner' || Auth::user()->role === 'admin' )
+                    
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_students')}}">All Students</a>
+                </div> 
+                @endif
             </div>
 
             <div class="table-responsive">
@@ -43,6 +49,7 @@
                             <th>Phone</th>
                             <th>E-mail</th>
                             <th>About</th>
+                            <th>Result</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -74,14 +81,19 @@
                             <td>{{$student->email}}</td>
                             <td>{{$student->about}}</td>
                             <td>
+                                <a class="btn btn-lg btn-warning btn-hover-yellow" href="{{route('student_result',$student->id)}}">Result</a> 
+                            </td>
+                            <td>
+                                @if (Auth::user()->role === 'owner' || Auth::user()->role === 'admin')
                                 <div class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <span class="flaticon-more-button-of-three-dots"></span>
                                     </a>
 
+                                        
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <form action="{{route('destroy_students',$student->id)}}" method="POST">
-                            
+                                            
                                             @csrf
                                             
                                             {{-- Delete method for Deletion in laravel --}}
@@ -91,8 +103,10 @@
                                         </form>
                                         <a class="dropdown-item btn-hover-yellow" href="{{route('edit_students',$student->id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a> 
                                         <a class="dropdown-item btn-hover-yellow" href="{{route('student_details',$student->id)}}"><i class="fas fa-redo-alt text-orange-peel pl-2 pl-2 pr-3"></i>View Details</a> 
+                                        
                                     </div>
                                 </div>
+                                @endif
                             </td>
                         </tr>
 

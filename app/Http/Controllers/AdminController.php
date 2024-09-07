@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fee;
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Classes;
 use App\Models\Parents;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -184,11 +187,13 @@ public function destroy_section(string $id)
     }
 
     //Fetch Sections using ajax
-    public function fetchSection( Request $request)
-    {
-        $sections = Section::where('class_id', $request->class_id)->get();
-        return response()->json(['sections' => $sections]);
-    }
+    public function fetchSections(Request $request)
+{
+    $sections = Section::where('class_id', $request->class_id)->get();
+
+    return response()->json(['sections' => $sections]);
+}
+
 
     //Store Students
     public function store_students(Request $request)
@@ -209,6 +214,7 @@ public function destroy_section(string $id)
             'parent_id' => 'required|exists:parents,id',
             'roll' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
+            'fee' => 'required | numeric',
         ]);
 
         $student = new Student();
@@ -226,6 +232,7 @@ public function destroy_section(string $id)
         $student->parent_id = $request->parent_id;
         $student->roll = $request->roll;
         $student->phone = $request->phone;
+        $student->fee = $request->fee;
 
 
         $image = $request->pic;
@@ -236,6 +243,25 @@ public function destroy_section(string $id)
         }
 
         $student->save();
+
+        if($student->save()){
+
+            $fee = new Fee();
+            $fee->user_id = auth()->id();
+            $fee->student_id = $student->id;
+            $fee->amount = $request->fee;
+            $fee->status = 'paid';
+            
+            $fee->save();
+
+            // Retrieve the section's associated teachers and save the relationships in the student_teacher pivot table
+            $section = Section::with('teachers')->find($request->section_id);
+            if ($section) {
+                foreach ($section->teachers as $teacher) {
+                    $student->teachers()->attach($teacher->id);
+                }
+            }
+        }
 
         return redirect()->route('add_students')->with('success', 'Student added successfully.');
     }
@@ -279,6 +305,7 @@ public function destroy_section(string $id)
             'date_of_birth' => 'required|date',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:255',
+            'fee' => 'required | numeric',
         ]);
 
         $student = Student::findOrFail($id);
@@ -292,6 +319,7 @@ public function destroy_section(string $id)
         $student->blood_group = $request->blood_group;
         $student->email = $request->email;
         $student->phone = $request->phone;
+        $student->fee = $request->fee;
 
         $image = $request->pic;
         if($image){
@@ -304,6 +332,17 @@ public function destroy_section(string $id)
         }
 
         $student->save();
+
+        if($student->save()){
+
+            $fee = new Fee();
+            $fee->user_id = auth()->id();
+            $fee->student_id = $student->id;
+            $fee->amount = $request->fee;
+            $fee->status = 'paid';
+            
+            $fee->save();
+        }
 
         return redirect()->route('all_students')
                      ->with('success', "Student Updated Successfully!");
@@ -348,6 +387,7 @@ public function destroy_section(string $id)
             'blood_group' => 'required|string',
             'religion' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
+            'password' => 'required|string|min:8',
             'address' => 'required|',
             'occupation' => 'required|',
             'phone' => 'nullable|string|max:255',
@@ -366,9 +406,27 @@ public function destroy_section(string $id)
         }
         
         // Generate the new registration number
-        $reg_no = 'PARENT-' . now()->format('Ymd') . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+        $reg_no = 'AKH-' . now()->format('Ymd') . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
 
+
+        // Assuming the owner is the currently authenticated user
+        $owner = auth()->user();
+
+        // Store the data in the User table
+        $user = new User();
+        $user->owner_id = $owner->id;
+        $user->name = $request->f_name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = 'parent';
+
+        $user->save();
+
+        if($user->save()){
+
+            
         $parent = new Parents();
+        $parent->user_id = $user->id;
         $parent->reg_no = $reg_no;
         $parent->f_name = $request->f_name;
         $parent->l_name = $request->l_name;
@@ -377,6 +435,7 @@ public function destroy_section(string $id)
         $parent->religion = $request->religion;
         $parent->blood_group = $request->blood_group;
         $parent->email = $request->email;
+        $parent->password = Hash::make($request->password);
         $parent->address = $request->address;
         $parent->occupation = $request->occupation;
         $parent->phone = $request->phone;
@@ -390,20 +449,21 @@ public function destroy_section(string $id)
         }
 
         $parent->save();
+    }
 
         return redirect()->route('all_parents')->with('success', 'Parent Added Successfully.');
     }
 
     //Show Parents Details
     public function parent_details (string $id){
-        $parent = Parents::findOrFail($id);
+        $parent = Parents::where('user_id', $id)->firstOrFail();
         return view('parent.parent_details',compact('parent'));
     }
 
     //To Edit Parents
     public function edit_parents(string $id)
     {
-        $parent = Parents::findOrFail($id);
+        $parent = Parents::where('user_id', $id)->firstOrFail();
 
         return view('parent.edit_parents',compact('parent'));
     }
@@ -425,7 +485,7 @@ public function destroy_section(string $id)
             'phone' => 'nullable|string|max:255',
         ]);
 
-        $parent = Parents::findOrFail($id);
+        $parent = Parents::where('user_id', $id)->firstOrFail();
         $parent->f_name = $request->f_name;
         $parent->l_name = $request->l_name;
         $parent->about = $request->about;
@@ -450,6 +510,17 @@ public function destroy_section(string $id)
 
         $parent->save();
 
+        if($parent->save()){
+   
+            // Store the data in the User table
+            $user = User::where('id', $id)->firstOrFail();
+            $user->name = $request->f_name;
+            $user->email = $request->email;
+
+            $user->save();
+
+            
+        }
         return redirect()->route('all_parents')
                      ->with('success', "Parent Updated Successfully!");
 
@@ -458,100 +529,28 @@ public function destroy_section(string $id)
     // Delete Parents
     public function destroy_parents(string $id)
     {
-    
-        Parents::destroy($id);
-    
+
+        $parent = Parents::where('user_id',$id)->first();
+
+    if ($parent) {
+
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+        }
+
+        // Delete the teacher record
+        $parent->delete();
+
         return redirect()->back()
                         ->with('status', "Parent Deleted");
+    } else {
+        return redirect()->back()
+                        ->with('status', "Parent not found Deleted");
+    }
+
     }
    
-
-
-    // //Subjects
-    // public function to_subject()
-    // {
-    //     //
-    // }
-    // public function add_subjects()
-    // {
-    //     //
-    // }
-    // public function show_subjects(string $id)
-    // {
-    //     //
-    // }
-    // public function edit_subjects(string $id)
-    // {
-    //     //
-    // }
-    // public function update_subjects(Request $request, string $id)
-    // {
-    //     //
-    // }
-    // public function destroy_subjects(string $id)
-    // {
-    //     //
-    // }
-
-
-    
-    
-  
-
-   
-
-    // //Events
-    // public function to_event()
-    // {
-    //     //
-    // }
-    // public function add_events()
-    // {
-    //     //
-    // }
-    // public function show_events(string $id)
-    // {
-    //     //
-    // }
-    // public function edit_events(string $id)
-    // {
-    //     //
-    // }
-    // public function update_events(Request $request, string $id)
-    // {
-    //     //
-    // }
-    // public function destroy_events(string $id)
-    // {
-    //     //
-    // }
-
-    
-
-
-    // public function all_student(){
-    //     return view('student.all_student');
-    // }
-    // public function student_details(){
-    //     return view('student.student_details');
-    // }
-    // public function admission_form(){
-    //     return view('student.admission_form');
-    // }
-    // public function student_promotion(){
-    //     return view('student.student_promotion');
-    // }
-
-
-    // public function all_parents(){
-    //     return view('parent.all_parents');
-    // }
-    // public function add_parent(){
-    //     return view('parent.add_parent');
-    // }
-    // public function parent_details(){
-    //     return view('parent.parent_details');
-    // }
 
 
     public function all_books(){
@@ -572,10 +571,6 @@ public function destroy_section(string $id)
         return view('account.add_expense');
     }
     
-
-    public function all_subjects(){
-        return view('subject.all_subjects');
-    }
 
 
     public function class_routine(){

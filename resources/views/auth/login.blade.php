@@ -8,7 +8,6 @@
      <x-auth-session-status class="mb-4" :status="session('status')" />
 
      
-
     <div class="login-page-wrap">
         <div class="login-page-content">
             <div class="login-box">
@@ -69,11 +68,6 @@
                             </x-primary-button>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <button type="submit" class="login-btn">Login</button>
-                    </div> -->
-                </form>
-
                 <div class="login-social">
                     <p>or sign in with</p>
                     <ul>
@@ -85,7 +79,7 @@
                 </div>
                 
                  {{-- <div class="sign-up">Don't have an account ? <a href="#">Signup now!</a></div> --}}
-                <div class="form-group mt-4 d-flex align-items-center justify-content-around">
+                {{-- <div class="form-group mt-4 d-flex align-items-center justify-content-around">
                     <div>Don't have an account ?</div> 
 
                     <div>
@@ -99,7 +93,7 @@
                         </a>
                         @endif
                     </div>
-                </div> 
+                </div>  --}}
             </div>
         </div>
     </div>

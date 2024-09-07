@@ -8,7 +8,7 @@
             <li>
                 <a href="{{url('index.php')}}">Home</a>
             </li>
-            <li>Add New Class</li>
+            <li>Edit Class</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -23,12 +23,13 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>Add New Class</h3>
+                    <h3>Edit Class</h3>
                 </div>
-               <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" 
-                    data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
                 </div>
+                
             </div>
                 
                 <div class="row">

@@ -51,17 +51,17 @@ class Teacher extends Model
 
     public function classes()
     {
-        return $this->belongsToMany(Classes::class, 'class_teacher');
+        return $this->belongsToMany(Classes::class, 'class_teacher', 'teacher_id', 'classes_id');
     }
 
     public function sections()
     {
-        return $this->belongsToMany(Section::class, 'section_teacher');
+        return $this->belongsToMany(Section::class, 'section_teacher','teacher_id','section_id');
     }
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'student_teacher');
+        return $this->belongsToMany(Student::class, 'student_teacher','teacher_id','student_id');
     }
 
     public function assignTo($user)
@@ -74,5 +74,9 @@ class Teacher extends Model
             $this->admin_id = $user->id;
         }
         $this->save();
+    }
+
+    public function attendances(){
+        return $this->hasMany(Attendance::class, 'teacher_id');
     }
 }

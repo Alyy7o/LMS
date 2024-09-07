@@ -18,6 +18,9 @@
                 <div class="item-title">
                     <h3>Add New Teacher</h3>
                 </div>
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_teachers')}}">All Teachers</a>
+                </div> 
             </div>
 
             @if ($errors->any())

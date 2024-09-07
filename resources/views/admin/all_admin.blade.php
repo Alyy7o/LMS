@@ -45,6 +45,10 @@
             <div class="heading-layout1">
                 <div class="item-title">
                     <h3>All Admins Data</h3>
+                </div>
+                <div>
+                    <a class="fw-btn-fill btn-gradient-yellow" href="{{route('add_admin')}}">Add New Admin</a>
+
                 </div>  
             </div>
            

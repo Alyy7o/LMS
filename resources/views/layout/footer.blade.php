@@ -3,15 +3,17 @@
 </div>
 <!-- resources/views/your-view.blade.php -->
 <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        var classDropdown = document.getElementById('class-dd');
-        var sectionDropdown = document.getElementById('section-dd');
 
-        classDropdown.addEventListener('change', function(event) {
-            var classId = classDropdown.value;
-            sectionDropdown.innerHTML = '';
+document.addEventListener('DOMContentLoaded', function() {
+    var classDropdown = document.getElementById('class-dd');
+    var sectionDropdown = document.getElementById('section-dd');
 
-            fetch('/api/fetch-section', {
+    classDropdown.addEventListener('change', function() {
+        var classId = classDropdown.value;
+        sectionDropdown.innerHTML = ''; // Clear previous options
+
+        if (classId) {
+            fetch('/fetch-sections', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,9 +32,112 @@
                 });
             })
             .catch(error => console.error('Error:', error));
-        });
-
+        }
     });
+});
+
+   document.addEventListener('DOMContentLoaded', function() {
+    var classDropdown = document.getElementById('class-dd');
+    var sectionDropdown = document.getElementById('section-dd');
+    var subjectDropdown = document.getElementById('subject-dd');
+    var studentsList = document.getElementById('students-list');
+    
+
+    // Fetch Sections based on Class
+    classDropdown.addEventListener('change', function() {
+        var classId = classDropdown.value;
+        sectionDropdown.innerHTML = '<option value="">Select Section</option>';
+        subjectDropdown.innerHTML = '<option value="">Select Subject</option>';
+        studentsList.innerHTML = ''; // Clear students list
+
+        if (classId) {
+            fetch('/api/fetch-section', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ class_id: classId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.sections.forEach(function(section) {
+                    var option = document.createElement('option');
+                    option.value = section.id;
+                    option.text = section.name;
+                    sectionDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+
+    // Fetch Subjects based on Section
+    sectionDropdown.addEventListener('change', function() {
+        var sectionId = sectionDropdown.value;
+        subjectDropdown.innerHTML = '<option value="">Select Subject</option>';
+        studentsList.innerHTML = ''; // Clear students list
+
+        if (sectionId) {
+            fetch('/api/fetch-subject', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ section_id: sectionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.subjects.forEach(function(subject) {
+                    var option = document.createElement('option');
+                    option.value = subject.id;
+                    option.text = subject.name;
+                    subjectDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+
+    // Fetch Students based on Section
+    sectionDropdown.addEventListener('change', function() {
+        var sectionId = sectionDropdown.value;
+        studentsList.innerHTML = ''; // Clear students list
+
+        if (sectionId) {
+            fetch('/api/fetch-students', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ section_id: sectionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.students.length > 0) {
+                    var studentsHTML = '<table class="table">';
+                    studentsHTML += '<thead><tr><th>Roll No.</th><th>Name</th><th>Obtained Marks</th><th>Total Marks</th></tr></thead><tbody>';
+                    data.students.forEach(function(student) {
+                        studentsHTML += '<tr>';
+                        studentsHTML += '<td>' + student.roll + '</td>';
+                        studentsHTML += '<td>' + student.f_name + student.l_name + '</td>';
+                        studentsHTML += '<td><input type="number" name="marks[' + student.id + '][obtained_marks]" class="form-control" required></td>';
+                        studentsHTML += '<td><input type="number" name="marks[' + student.id + '][total_marks]" class="form-control" required></td>';
+                        studentsHTML += '</tr>';
+                    });
+                    studentsHTML += '</tbody></table>';
+                    studentsList.innerHTML = studentsHTML;
+                } else {
+                    studentsList.innerHTML = 'No students found for this section.';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+});
+
 
     // For parent select
     document.addEventListener('DOMContentLoaded', function() {
@@ -69,6 +174,11 @@
         });
     });
     
+
+    // Back Button
+    function goBack() {
+        window.history.back();
+    }
 
 
 

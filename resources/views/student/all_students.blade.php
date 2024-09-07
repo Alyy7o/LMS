@@ -46,6 +46,9 @@
                 <div class="item-title">
                     <h3>All Students Data</h3>
                 </div>
+                <div>
+                    <a class="fw-btn-fill btn-gradient-yellow" href="{{route('add_students')}}">Add New Student</a>
+                </div>
                 
             </div>
             
@@ -69,6 +72,7 @@
                             <th>Date Of Birth</th>
                             <th>Phone</th>
                             <th>E-mail</th>
+                            <th>Fee</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -99,6 +103,7 @@
                             <td>{{ $student->date_of_birth }}</td>
                             <td>{{ $student->phone }}</td>
                             <td>{{ $student->email }}</td>
+                            <td>{{ $student->fee }}</td>
                             <td>
                                 <div class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

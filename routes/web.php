@@ -1,12 +1,19 @@
 <?php
 
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OwnerController;
-use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\ParentController;
+use App\Http\Controllers\ResultController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SuperAdminController;
 
 Route::get('/login', function () {
     return view('auth/login');
@@ -26,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// Super Admin
 Route::middleware('auth','isAdmin:super_admin')->group( function () {
     Route::get('index', [SuperAdminController::class, 'index'])->name('index');
     Route::get('add_owner', [SuperAdminController::class, 'add_owner'])->name('add_owner');
@@ -41,6 +49,7 @@ Route::middleware('auth','isAdmin:super_admin,owner')->group( function () {
     Route::put('update_owner/{id}', [SuperAdminController::class, 'update_owner'])->name('update_owner');
 });
 
+// Owner
 Route::middleware('auth','isAdmin:owner')->group( function () {
     
     Route::get('indexx', [AdminController::class, 'indexx']) ;
@@ -60,17 +69,18 @@ Route::middleware('auth','isAdmin:owner')->group( function () {
     Route::delete('destroy_section/{id}', [AdminController::class, 'destroy_section'])->name('destroy_section');
     Route::delete('destroy_students/{id}', [AdminController::class, 'destroy_students'])->name('destroy_students');
     Route::delete('destroy_parents/{id}', [AdminController::class, 'destroy_parents'])->name('destroy_parents');
+    Route::delete('destroy_subject/{id}', [SubjectController::class, 'destroy_subject'])->name('destroy_subject');
+    Route::delete('destroy_notice/{id}', [NoticeController::class, 'destroy_notice'])->name('destroy_notice');
     
 
 })->name('owner');
 
 
+// Owner and Admin
 Route::middleware('auth','isAdmin:admin,owner')->group( function () {
 
     Route::get('teacher', [AdminController::class, 'teacher']);
     Route::get('student', [AdminController::class, 'student']) ;
-    Route::get('parent', [AdminController::class, 'parent']);
-    
 
     //Teacher
     Route::get('add_teacher', [OwnerController::class, 'add_teacher'])->name('add_teacher');
@@ -93,12 +103,12 @@ Route::middleware('auth','isAdmin:admin,owner')->group( function () {
     Route::get('sections/{id}', [AdminController::class, 'show_sections'])->name('show_sections');
     Route::get('edit_section/{id}', [AdminController::class, 'edit_section'])->name('edit_section');
     Route::put('update_section/{id}', [AdminController::class, 'update_section'])->name('update_section');
-
-
+    
+    
     // Students
     Route::get('all_students', [AdminController::class, 'all_students'])->name('all_students');
     Route::get('add_students', [AdminController::class, 'add_students'])->name('add_students');
-    Route::post('/api/fetch-section', [AdminController::class, 'fetchSection'])->name('fetch.section');
+    Route::post('/fetch-sections', [AdminController::class, 'fetchSections'])->name('fetch.sections');
     Route::post('store_students', [AdminController::class, 'store_students'])->name('store_students');
     Route::get('student_details/{id}', [AdminController::class, 'student_details'])->name('student_details');
     Route::get('show_students/{id}', [AdminController::class, 'show_students'])->name('show_students');
@@ -113,45 +123,113 @@ Route::middleware('auth','isAdmin:admin,owner')->group( function () {
     Route::get('parent_details/{id}', [AdminController::class, 'parent_details'])->name('parent_details');
     Route::get('edit_parents/{id}', [AdminController::class, 'edit_parents'])->name('edit_parents');
     Route::put('update_parents/{id}', [AdminController::class, 'update_parents'])->name('update_parents');
+    
+    
+    // Subject
+    Route::get('all_subjects', [SubjectController::class, 'all_subjects'])->name('all_subjects');
+    Route::get('add_subject', [SubjectController::class, 'add_subject'])->name('add_subject');
+    Route::post('store_subject', [SubjectController::class, 'store_subject'])->name('store_subject');
+    Route::get('show_subjects/{id}', [SubjectController::class, 'show_subjects'])->name('show_subjects');
+    Route::get('edit_subject/{id}', [SubjectController::class, 'edit_subject'])->name('edit_subject');
+    Route::put('update_subject/{id}', [SubjectController::class, 'update_subject'])->name('update_subject');
+    
+    
+    // Notice
+    Route::get('all_notices', [NoticeController::class, 'all_notices'])->name('all_notices');
+    Route::get('add_notice', [NoticeController::class, 'add_notice'])->name('add_notice');
+    Route::post('store_notice', [NoticeController::class, 'store_notice'])->name('store_notice');
+    Route::get('notice_detail/{id}', [NoticeController::class, 'notice_detail'])->name('notice_detail');
+    Route::get('edit_notice/{id}', [NoticeController::class, 'edit_notice'])->name('edit_notice');
+    Route::put('update_notice/{id}', [NoticeController::class, 'update_notice'])->name('update_notice');
+    
+    // Fee
+    Route::get('all_fees', [FeeController::class, 'all_fees'])->name('all_fees');
+    Route::patch('all_fees/{id}', [FeeController::class, 'updateFeeStatus'])->name('fees_status_update');
 });
 
 
+// Admin Only
 Route::middleware('auth','isAdmin:admin')->group( function () {
-   
+    
     //Library
-Route::get('all_books', [AdminController::class, 'all_books']);
-Route::get('add_book', [AdminController::class, 'add_book']);
-
+    Route::get('all_books', [AdminController::class, 'all_books']);
+    Route::get('add_book', [AdminController::class, 'add_book']);
+    
 })->name('admin');
 
+
+
+// Admin and owner and teacher
+Route::middleware('auth','isAdmin:admin,owner,teacher')->group( function () {
+    
+    Route::get('show_students_of_teacher/{id}', [TeacherController::class, 'show_students_of_teacher'])->name('show_students_of_teacher');
+    Route::get('student_result/{id}', [ResultController::class, 'student_result'])->name('student_result');
+    
+});
+
+// Teacher Only
+Route::middleware('auth','isAdmin:teacher')->group( function () {
+    
+    Route::get('parent', [AdminController::class, 'parent']);
+    
+    Route::get('profile_of_teacher/{id}', [TeacherController::class, 'profile_of_teacher'])->name('profile_of_teacher');
+    Route::get('all_classes_of_teacher/{id}', [TeacherController::class, 'all_classes_of_teacher'])->name('all_classes_of_teacher');
+    Route::get('all_sections_of_teacher/{id}/{class_id}', [TeacherController::class, 'all_sections_of_teacher'])->name('all_sections_of_teacher');
+    Route::get('all_students_of_teacher/{id}', [TeacherController::class, 'all_students_of_teacher'])->name('all_students_of_teacher');
+    
+    Route::get('student_attendence/{id}', [AttendanceController::class, 'student_attendence'])->name('student_attendence');
+    Route::post('store_attendance', [AttendanceController::class, 'store_attendance'])->name('store_attendance');
+    
+    Route::get('add_marks/{id}', [ResultController::class, 'add_marks'])->name('add_marks');
+    Route::post('/api/fetch-section', [ResultController::class, 'fetchSection'])->name('fetch.section');
+    Route::post('/api/fetch-subject', [ResultController::class, 'fetchSubject'])->name('fetch.subject');
+    Route::post('/api/fetch-students', [ResultController::class, 'fetchStudents'])->name('fetch.students');
+    Route::post('store_marks', [ResultController::class, 'store_marks'])->name('store_marks');
+
+    Route::get('all_result/{id}', [ResultController::class, 'all_result'])->name('all_result');
+
+    
+})->name('teacher');
+
+
+Route::middleware('auth','isAdmin:parent')->group( function () {
+
+    Route::get('parent_welcome', [ParentController::class, 'parent_welcome'])->name('parent_welcome');
+    Route::get('parent_child_data/{id}', [ParentController::class, 'parent_child_data'])->name('parent_child_data');
+    Route::get('parent_child_result/{id}', [ParentController::class, 'parent_child_result'])->name('parent_child_result');
+    Route::get('parent_child_attendance/{id}', [ParentController::class, 'parent_child_attendance'])->name('parent_child_attendance');
+
+
+})->name('parent');
+
+
+
+
+
 //Account
-Route::get('all_expense', [AdminController::class, 'all_expense']);
-Route::get('add_expense', [AdminController::class, 'add_expense']);
-Route::get('all_fees', [AdminController::class, 'all_fees']);
+// Route::get('all_expense', [AdminController::class, 'all_expense']);
+// Route::get('add_expense', [AdminController::class, 'add_expense']);
 
 
-//Subject
-Route::get('all_subjects', [AdminController::class, 'all_classes']);
+// //Class Routine
+// Route::get('class_routine', [AdminController::class, 'class_routine']);
 
-//Class Routine
-Route::get('class_routine', [AdminController::class, 'class_routine']);
+// //Student Attendence
+// Route::get('student_attendence', [AdminController::class, 'student_attendence']);
 
-//Student Attendence
-Route::get('student_attendence', [AdminController::class, 'student_attendence']);
+// // Exam
+// Route::get('exam_schedule', [AdminController::class, 'exam_schedule']);
+// Route::get('exam_grade', [AdminController::class, 'exam_grade']);
 
-// Exam
-Route::get('exam_schedule', [AdminController::class, 'exam_schedule']);
-Route::get('exam_grade', [AdminController::class, 'exam_grade']);
+// //Transport
+// Route::get('transport', [AdminController::class, 'transport']);
 
-//Transport
-Route::get('transport', [AdminController::class, 'transport']);
+// // Hostel
+// Route::get('hostel', [AdminController::class, 'hostel']);
 
-// Hostel
-Route::get('hostel', [AdminController::class, 'hostel']);
+// // Notice
+// Route::get('notice', [AdminController::class, 'notice']);
 
-// Notice
-Route::get('notice', [AdminController::class, 'notice']);
-
-// Message
-Route::get('message', [AdminController::class, 'message']);
+// // Message
+// Route::get('message', [AdminController::class, 'message']);
 

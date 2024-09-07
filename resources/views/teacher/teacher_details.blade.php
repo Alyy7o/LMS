@@ -10,7 +10,7 @@
             <li>
                 <a href="{{url('index')}}">Home</a>
             </li>
-            <li>Teacher Details</li>
+            <li>Profile</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -18,19 +18,13 @@
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
-                <div class="item-title">
-                    <h3>About Me</h3>
-                </div>
-               <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" 
-                    data-toggle="dropdown" aria-expanded="false">...</a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_teacher',$teacher->user_id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a> 
-                    </div>
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
                 </div>
+                
             </div>
+
             <div class="single-info-details">
                 <div class="item-img">
                     @if($teacher->pic)

@@ -34,7 +34,18 @@
                 <div class="item-title">
                     <h3>Edit Owner</h3>
                 </div>
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                </div>
+
+                @if (Auth::user()->role == 'superadmin')
+                    
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_owners')}}">All Owners</a>
+                </div> 
                 
+                @endif
+
             </div>
 
              @if ($errors->any())

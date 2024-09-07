@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Admin;
 use App\Models\Owner;
+use App\Models\Parents;
+use App\Models\Teacher;
 use App\Models\SuperAdmin;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,5 +69,19 @@ class User extends Authenticatable
     public function admin()
     {
         return $this->hasOne(Admin::class, 'admin_id');
+    }
+
+    public function parent()
+    {
+        return $this->hasOne(Parents::class, 'owner_id');
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class, 'owner_id');
+    }
+
+    public function fees(){
+        return $this->hasMany(Fee::class, 'student_id');
     }
 }

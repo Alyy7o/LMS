@@ -21,6 +21,9 @@
                 <div class="item-title">
                     <h3>Edit Parent</h3>
                 </div>
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                </div>
                 
             </div>
 
@@ -33,7 +36,7 @@
                 </ul>
             </div>
         @endif
-        <form action="{{ route('update_parents',$parent->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('update_parents',$parent->user_id) }}" method="POST" enctype="multipart/form-data">
             @csrf
 
              {{-- Update method for updation in Laravel --}}

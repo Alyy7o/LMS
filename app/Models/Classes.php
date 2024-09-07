@@ -16,12 +16,18 @@ class Classes extends Model
     public function sections(){
         return $this->hasMany(Section::class, 'class_id');
     }
+
     public function students(){
         return $this->hasMany(Student::class, 'class_id');
     }
 
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class, 'class_teacher');
+        return $this->belongsToMany(Teacher::class, 'class_teacher', 'classes_id', 'teacher_id');
     }
+
+    public function subjects(){
+        return $this->hasMany(Subject::class, 'class_id');
+    }
+    
 }

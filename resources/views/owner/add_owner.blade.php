@@ -21,7 +21,9 @@
                 <div class="item-title">
                     <h3>Add New Owner</h3>
                 </div>
-                
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_owner')}}">All Owners</a>
+                </div> 
             </div>
 
              @if ($errors->any())

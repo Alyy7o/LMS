@@ -24,6 +24,10 @@ class Parents extends Model
         'blood_group'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 
     public function students(){
         return $this->hasMany(Student::class, 'parent_id');

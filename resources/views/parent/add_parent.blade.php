@@ -21,7 +21,9 @@
                 <div class="item-title">
                     <h3>Add New Parent</h3>
                 </div>
-                
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_parents')}}">All Parents</a>
+                </div> 
             </div>
 
              @if ($errors->any())
@@ -87,6 +89,10 @@
                         <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                     </div>
 
+                    <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" id="password" name="password" value="{{ old('password') }}" required>
+                    </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group mt-3">
                         <label for="admission_id">Address</label>

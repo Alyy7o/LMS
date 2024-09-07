@@ -44,7 +44,9 @@
                 <div class="item-title">
                     <h3>Class: {{$class->name}}</h3>
                 </div>
-                
+                <div>
+                    <a class="fw-btn-fill btn-gradient-yellow" href="{{route('add_section')}}">Add New Section</a>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -95,6 +97,7 @@
                                                 </form>
                                                 @endif
                                                  <a class="dropdown-item btn-hover-yellow" href="{{route('edit_section',$section->id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a>
+                                                 <a class="dropdown-item btn-hover-yellow" href="{{route('show_subjects',['id' => $section->id])}}"><i class="fas fa-book text-orange-peel pl-2 pr-3"></i>View Subjects</a>
                                                  <a class="dropdown-item btn-hover-yellow" href="{{route('show_students',['id' => $section->id])}}"><i class="fas fa-redo-alt text-orange-peel pl-2 pr-3"></i>View Students</a>
 
                                             </div>

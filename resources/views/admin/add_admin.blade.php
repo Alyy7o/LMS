@@ -21,7 +21,9 @@
                 <div class="item-title">
                     <h3>Add New Admin</h3>
                 </div>
-                
+                <div>
+                    <a class="fw-btn-fill btn-danger" href="{{route('all_admin')}}">All Admins</a>
+                </div>   
             </div>
 
              @if ($errors->any())
@@ -132,7 +134,7 @@
                     <div class="col-lg-12 col-12 form-group my-3">
                         <label class="text-dark-medium">Upload Document Photo:</label>
                         {{-- <input type="file" class="form-control-file"> --}}
-                        <input type="file" class="form-control-file" id="doc_pic" name="doc_pic" value="{{ old('doc_pic') }}">
+                            <input type="file"  class="form-control-file" id="doc_pic" name="doc_pic" value="{{ old('doc_pic') }}">
 
                     </div>
 

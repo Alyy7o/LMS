@@ -46,6 +46,9 @@
                 <div class="item-title">
                     <h3>All Owners Data</h3>
                 </div>  
+                <div>
+                    <a class="fw-btn-fill btn-gradient-yellow" href="{{route('add_owner')}}">Add New Owner</a>
+                </div>
             </div>
 
             <div class="table-responsive">

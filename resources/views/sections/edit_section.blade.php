@@ -25,7 +25,10 @@
                 <div class="item-title">
                     <h3>Edit Section</h3>
                 </div>
-              
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                </div>
+                
             </div>
                 
                 <div class="row">
@@ -36,7 +39,6 @@
                     
                     <div class="col-12 form-group mg-t-8">
                         <input type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" value="Save">
-                        {{-- <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button> --}}
                     </div>
                     
                      

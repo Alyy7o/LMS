@@ -28,6 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id');
             $table->integer('roll')->unique();
             $table->string('phone')->unique();
+            $table->string('fee');
             $table->timestamps();
 
             // Add foreign key constraints

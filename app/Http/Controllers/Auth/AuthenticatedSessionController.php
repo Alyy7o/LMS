@@ -49,16 +49,24 @@ class AuthenticatedSessionController extends Controller
 
                     $owner = Owner::where('user_id', $user->id)->first();
 
-                    // Check if owner is active
-                    if ($owner && $owner->status !== 'active') {
-                        Auth::logout();
-                        return redirect('/login')->with('error', 'Your account is inactive. Please contact support.');
-                    }
-                    else
-                    {
+
+                        if ($owner) {
+                            if ($owner->status === 'active' && $owner->activated_at && now()->diffInDays($owner->activated_at) >= 30) {
+                                // Inactivate the owner after 30 days
+                                $owner->status = 'inactive';
+                                $owner->save();
+
+                                Auth::logout();
+                                return redirect('/login')->with('error', 'Your account has been deactivated after 30 days of activity.');
+                            }
+                        
+                            if ($owner->status !== 'active') {
+                                Auth::logout();
+                                return redirect('/login')->with('error', 'Your account is inactive. Please contact support.');
+                            }
+                        }
 
                         return redirect('all_admin');
-                    }
    
                 }
                 
@@ -67,19 +75,20 @@ class AuthenticatedSessionController extends Controller
                     return redirect('student');
                 }
                 
-                // else if($request->user()->role === 'teacher'){
-                //     return redirect('teacher');
-                // }
-                // else if($request->user()->role === 'parent'){
-                //     return redirect('parent');
-                // }
+                // teacher
+                else if($request->user()->role === 'teacher'){
+                    return redirect('parent');
+                }
+                
+                else if($request->user()->role === 'parent'){
+                    return redirect('parent_welcome');
+                }
+
                 // else if($request->user()->role === 'student'){
                 //     return redirect('student');
                 // }
                 else {
-                   // return redirect()->intended(route('dashboard'));
-                    // session()->flash('error', 'User not found or credentials do not match.');
-                    // return redirect()->back();
+                  
                     return redirect('/welcome')->with('error', 'Unauthorized access.');
                 }
             } 

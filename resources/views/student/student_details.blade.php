@@ -18,9 +18,10 @@
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
-                <div class="item-title">
-                    <h3>About Me</h3>
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
                 </div>
+                
                <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" 
                     data-toggle="dropdown" aria-expanded="false">...</a>
@@ -55,12 +56,12 @@
                                     <td class="font-medium text-dark-medium">{{$student->f_name}} {{$student->l_name}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Gender:</td>
-                                    <td class="font-medium text-dark-medium">{{ $student->gender }}</td>
-                                </tr>
-                                <tr>
                                     <td>Father Name:</td>
                                     <td class="font-medium text-dark-medium">{{ $student->parents->f_name }} {{ $student->parents->l_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender:</td>
+                                    <td class="font-medium text-dark-medium">{{ $student->gender }}</td>
                                 </tr>
                                 
                                 <tr>
@@ -99,6 +100,10 @@
                                 <tr>
                                     <td>Phone:</td>
                                     <td class="font-medium text-dark-medium">{{ $student->phone }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fee:</td>
+                                    <td class="font-medium text-dark-medium">{{ $student->fee }}</td>
                                 </tr>
                             </tbody>
                         </table>

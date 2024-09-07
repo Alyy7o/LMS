@@ -22,7 +22,9 @@
                 <div class="item-title">
                     <h3>Add New Class</h3>
                 </div>
-               
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('admin.all_classes')}}">All Classes</a>
+                </div>      
             </div>
                 
                 <div class="row">

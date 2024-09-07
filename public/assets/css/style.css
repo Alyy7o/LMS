@@ -920,7 +920,7 @@ h6 {
   margin-right: 10px;
 }
 .dataTables_wrapper .dataTables_paginate span a.paginate_button {
-  border: 1px solid #ffae01;
+  border: 1px solid #FFAE01;
   padding: 8px 18px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -929,23 +929,23 @@ h6 {
   box-shadow: none;
 }
 .dataTables_wrapper .dataTables_paginate span a.paginate_button:hover {
-  background: -webkit-gradient(linear, left top, right top, from(#ff9d01), to(#ffae01));
-  background: -webkit-linear-gradient(left, #ff9d01, #ffae01);
-  background: -o-linear-gradient(left, #ff9d01, #ffae01);
-  background: linear-gradient(to right, #ff9d01, #ffae01);
-  border-color: #ffae01;
+  background: -webkit-gradient(linear, left top, right top, from(#ff9d01), to(#FFAE01));
+  background: -webkit-linear-gradient(left, #ff9d01, #FFAE01);
+  background: -o-linear-gradient(left, #ff9d01, #FFAE01);
+  background: linear-gradient(to right, #ff9d01, #FFAE01);
+  border-color: #FFAE01;
 }
 .dataTables_wrapper .dataTables_paginate span .paginate_button.current {
-  background: -webkit-gradient(linear, left top, right top, from(#ff9d01), to(#ffae01));
-  background: -webkit-linear-gradient(left, #ff9d01, #ffae01);
-  background: -o-linear-gradient(left, #ff9d01, #ffae01);
-  background: linear-gradient(to right, #ff9d01, #ffae01);
-  border: 1px solid #ffae01;
+  background: -webkit-gradient(linear, left top, right top, from(#ff9d01), to(#FFAE01));
+  background: -webkit-linear-gradient(left, #ff9d01, #FFAE01);
+  background: -o-linear-gradient(left, #ff9d01, #FFAE01);
+  background: linear-gradient(to right, #ff9d01, #FFAE01);
+  border: 1px solid #FFAE01;
   padding: 8px 18px;
 }
 .dataTables_wrapper .dataTables_paginate span .paginate_button.current:hover {
   background: transparent;
-  border-color: #ffae01;
+  border-color: #FFAE01;
 }
 /*=============== 3.2 Full Calender ==================*/
 .fc-calender .fc-header-toolbar .fc-left {
@@ -4266,7 +4266,7 @@ ul {
   background: linear-gradient(to right, #1565c0, #314ce0);
 }
 .btn-gradient-yellow {
-  background-color: #ffae01;
+  background-color: #FFAE01;
 }
 .gradient-dodger-blue {
   background: -webkit-gradient(linear, left top, right top, from(#2196f3), to(#21bff3));

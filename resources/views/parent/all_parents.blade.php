@@ -44,6 +44,9 @@
                 <div class="item-title">
                     <h3>All Parents Data</h3>
                 </div>
+                <div>
+                    <a class="fw-btn-fill btn-gradient-yellow" href="{{route('add_parent')}}">Add New Parent</a>
+                </div>
                 
             </div>
             
@@ -100,7 +103,7 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         @if ( Auth::user()->role === 'owner')
                                             
-                                        <form action="{{route('destroy_parents',$parent->id)}}" method="POST">
+                                        <form action="{{route('destroy_parents',$parent->user_id)}}" method="POST">
                                             
                                             @csrf
                                             
@@ -110,8 +113,8 @@
                                             <button class="dropdown-item btn-hover-yellow" type="submit" ><i class="fas fa-times text-orange-red pl-2 pr-3" ></i>Delete</button>
                                         </form>
                                         @endif
-                                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_parents',$parent->id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a> 
-                                        <a class="dropdown-item btn-hover-yellow" href="{{route('parent_details',$parent->id)}}"><i class="fas fa-redo-alt text-orange-peel pl-2 pl-2 pr-3"></i>View Details</a> 
+                                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_parents',$parent->user_id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a> 
+                                        <a class="dropdown-item btn-hover-yellow" href="{{route('parent_details',$parent->user_id)}}"><i class="fas fa-redo-alt text-orange-peel pl-2 pl-2 pr-3"></i>View Details</a> 
                                     </div>
                                 </div>
                             </td>

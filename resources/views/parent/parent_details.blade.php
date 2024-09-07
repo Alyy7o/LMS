@@ -18,16 +18,17 @@
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
-                <div class="item-title">
-                    <h3>About Me</h3>
-                </div>
+                <div>
+                    <a class="btn btn-danger btn-lg" href="{{route('all_parents')}}">All Parents</a>
+                </div> 
+                
                <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" 
                     data-toggle="dropdown" aria-expanded="false">...</a>
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_parents',$parent->id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a>                     </div>
+                        <a class="dropdown-item btn-hover-yellow" href="{{route('edit_parents',$parent->user_id)}}"><i class="fas fa-cogs text-dark-pastel-green pl-2 pr-3"></i>Edit</a>                     </div>
                 </div>
             </div>
             <div class="single-info-details">

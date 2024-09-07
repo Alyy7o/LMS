@@ -46,6 +46,9 @@
                 <div class="item-title">
                     <h3>All Teachers Data</h3>
                 </div>  
+                <div>
+                    <a class="fw-btn-fill btn-gradient-yellow" href="{{route('add_teacher')}}">Add New Teacher</a>
+                </div>
             </div>
            
             <div class="table-responsive">

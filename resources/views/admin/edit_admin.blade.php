@@ -21,6 +21,9 @@
                 <div class="item-title">
                     <h3>Edit Admin</h3>
                 </div>
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                </div>
                 
             </div>
 

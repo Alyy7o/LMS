@@ -291,6 +291,7 @@ textarea {
     right: 0;
     height: 100%;
     z-index: 1000; /* Ensures the sidebar stays on top */
+    overflow-y: auto; /* Adds a scrollbar if the content overflows */
 }
 
 /* Optional: Adjust the width of the sidebar */
@@ -318,6 +319,36 @@ textarea {
     border-color: #80bdff;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#wrapper {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+}
+
+.dashboard-page-one {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar-main {
+    height: 100%;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 20px;
 }
 
 

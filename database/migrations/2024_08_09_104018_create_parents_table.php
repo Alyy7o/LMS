@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id') // Relates to the user who created the admin
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
             $table->string('reg_no')->unique();
             $table->string('f_name');
             $table->string('l_name');
@@ -21,6 +25,7 @@ return new class extends Migration
             $table->string('blood_group');
             $table->string('religion')->nullable();
             $table->string('email')->unique();
+            $table->string('password');
             $table->string('address');
             $table->string('phone')->unique();
             $table->text('about')->nullable();
