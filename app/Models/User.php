@@ -84,4 +84,6 @@ class User extends Authenticatable
     public function fees(){
         return $this->hasMany(Fee::class, 'student_id');
     }
+
+
 }

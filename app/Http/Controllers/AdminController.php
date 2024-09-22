@@ -5,30 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\Fee;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Owner;
 use App\Models\Classes;
 use App\Models\Parents;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
 
-    public function indexx(){
-        return view('admin.index');
+    public function admin_dashboard()
+    {
+        $id = Auth::id();
+        
+        // $teachers = User::where('owner_id', $id)->where('role', 'teacher')->count();
+        // $parents = User::where('owner_id', $id)->where('role', 'parent')->count();
+        $fees = Fee::sum('amount');
+        $students = Student::all()->count();
+
+
+        // Return view with students count
+        return view('admin.admin_dashboard', compact('students', 'fees'));
+
     }
 
-    public function student(){
-        return view('admin.index3');
-    }
-    public function teacher(){
-        return view('admin.index5');
-    }
-    public function parent(){
-        return view('admin.parents');
-    }
+    
+    // public function student(){
+    //     return view('admin.index3');
+    // }
+
+
+    // public function parent(){
+    //     return view('admin.parents');
+    // }
     
 
 

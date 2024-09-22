@@ -6,9 +6,19 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
+
+    public function teachers_dashboard(){
+        $id = Auth::id();
+        $teacher = Teacher::where('user_id', $id)->firstOrFail();
+        $students = count($teacher->students);
+        $classes = count($teacher->classes);
+        $sections = count($teacher->sections);
+        return view('teacher.teachers_dashboard', compact('students', 'classes', 'sections'));
+    }
 
     // profile_of_teacher
     public function profile_of_teacher(string $id)

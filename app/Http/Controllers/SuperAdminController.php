@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Owner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -12,8 +13,12 @@ use Illuminate\Support\Facades\Storage;
 class SuperAdminController extends Controller
 {
 
-    public function index(){
-        return view('admin.index');
+    public function sa_dashboard(){
+        $owner_count = DB::table('owners')->count();
+        $owner_active_count = DB::table('owners')->where('status','active')->count();
+        $owner_inactive_count = DB::table('owners')->where('status','inactive')->count();
+
+        return view('admin.sa_dashboard',compact('owner_count','owner_active_count','owner_inactive_count'));
     }
     
      //All Owners

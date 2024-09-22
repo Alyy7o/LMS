@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\AdminController;
@@ -14,7 +13,12 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SuperAdminController;
+use App\Models\Owner;
+use App\Models\Teacher;
 
+Route::get('/', function () {
+    return redirect('/login');
+});
 Route::get('/login', function () {
     return view('auth/login');
 });
@@ -35,7 +39,7 @@ require __DIR__.'/auth.php';
 
 // Super Admin
 Route::middleware('auth','isAdmin:super_admin')->group( function () {
-    Route::get('index', [SuperAdminController::class, 'index'])->name('index');
+    Route::get('super_admin/dashboard', [SuperAdminController::class, 'sa_dashboard'])->name('dashboard');
     Route::get('add_owner', [SuperAdminController::class, 'add_owner'])->name('add_owner');
     Route::post('store_owner', [SuperAdminController::class, 'store_owner'])->name('store_owner');
     Route::get('all_owner', [SuperAdminController::class, 'all_owner'])->name('all_owner');
@@ -52,7 +56,7 @@ Route::middleware('auth','isAdmin:super_admin,owner')->group( function () {
 // Owner
 Route::middleware('auth','isAdmin:owner')->group( function () {
     
-    Route::get('indexx', [AdminController::class, 'indexx']) ;
+    Route::get('owner_dashboard', [OwnerController::class, 'owner_dashboard'])->name('owner_dashboard') ;
 
     //Admin
     Route::get('add_admin', [OwnerController::class, 'add_admin'])->name('add_admin');
@@ -79,7 +83,6 @@ Route::middleware('auth','isAdmin:owner')->group( function () {
 // Owner and Admin
 Route::middleware('auth','isAdmin:admin,owner')->group( function () {
 
-    Route::get('teacher', [AdminController::class, 'teacher']);
     Route::get('student', [AdminController::class, 'student']) ;
 
     //Teacher
@@ -151,6 +154,9 @@ Route::middleware('auth','isAdmin:admin,owner')->group( function () {
 // Admin Only
 Route::middleware('auth','isAdmin:admin')->group( function () {
     
+    Route::get('admin_dashboard', [AdminController::class, 'admin_dashboard'])->name('admin_dashboard') ;
+
+
     //Library
     Route::get('all_books', [AdminController::class, 'all_books']);
     Route::get('add_book', [AdminController::class, 'add_book']);
@@ -170,7 +176,7 @@ Route::middleware('auth','isAdmin:admin,owner,teacher')->group( function () {
 // Teacher Only
 Route::middleware('auth','isAdmin:teacher')->group( function () {
     
-    Route::get('parent', [AdminController::class, 'parent']);
+    Route::get('teachers_dashboard', [TeacherController::class, 'teachers_dashboard'])->name('teachers_dashboard');
     
     Route::get('profile_of_teacher/{id}', [TeacherController::class, 'profile_of_teacher'])->name('profile_of_teacher');
     Route::get('all_classes_of_teacher/{id}', [TeacherController::class, 'all_classes_of_teacher'])->name('all_classes_of_teacher');
@@ -194,42 +200,12 @@ Route::middleware('auth','isAdmin:teacher')->group( function () {
 
 Route::middleware('auth','isAdmin:parent')->group( function () {
 
-    Route::get('parent_welcome', [ParentController::class, 'parent_welcome'])->name('parent_welcome');
+    Route::get('parent_dashboard', [ParentController::class, 'parent_dashboard'])->name('parent_dashboard');
     Route::get('parent_child_data/{id}', [ParentController::class, 'parent_child_data'])->name('parent_child_data');
     Route::get('parent_child_result/{id}', [ParentController::class, 'parent_child_result'])->name('parent_child_result');
     Route::get('parent_child_attendance/{id}', [ParentController::class, 'parent_child_attendance'])->name('parent_child_attendance');
+    Route::get('parent_child_fees/{id}', [ParentController::class, 'parent_child_fees'])->name('parent_child_fees');
 
 
 })->name('parent');
-
-
-
-
-
-//Account
-// Route::get('all_expense', [AdminController::class, 'all_expense']);
-// Route::get('add_expense', [AdminController::class, 'add_expense']);
-
-
-// //Class Routine
-// Route::get('class_routine', [AdminController::class, 'class_routine']);
-
-// //Student Attendence
-// Route::get('student_attendence', [AdminController::class, 'student_attendence']);
-
-// // Exam
-// Route::get('exam_schedule', [AdminController::class, 'exam_schedule']);
-// Route::get('exam_grade', [AdminController::class, 'exam_grade']);
-
-// //Transport
-// Route::get('transport', [AdminController::class, 'transport']);
-
-// // Hostel
-// Route::get('hostel', [AdminController::class, 'hostel']);
-
-// // Notice
-// Route::get('notice', [AdminController::class, 'notice']);
-
-// // Message
-// Route::get('message', [AdminController::class, 'message']);
 

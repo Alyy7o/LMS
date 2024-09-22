@@ -68,9 +68,12 @@
   /*-------------------------------------
       jquery Scollup activation code
     -------------------------------------*/
-  $("#preloader").fadeOut("slow", function () {
-    $(this).remove();
-  });
+    $(window).on('load', function () {
+      $("#preloader").fadeOut("slow", function () {
+        $(this).remove();
+      });
+    });
+    
 
   $(function () {
     /*-------------------------------------

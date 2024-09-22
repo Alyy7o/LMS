@@ -38,67 +38,60 @@
                 </div>
             </div>
         @endif
+        
+                <!-- Student Table Area Start Here -->
+                <div class="card height-auto">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3>All Students Result for: {{ $teacher->f_name }} {{ $teacher->l_name }}</h3>
+                            </div>
+                            <div>
+                                <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                            </div>
+                        </div>
 
-    <!-- Student Table Area Start Here -->
-    <div class="card height-auto">
-        <div class="card-body">
-            <div class="heading-layout1">
-                <div class="item-title">
-                    <h3>All Students Result for: {{ $teacher->f_name }} {{ $teacher->l_name }}</h3>
+                        <div class="table-responsive">
+                            <table class="table display data-table text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Roll no.</th>
+                                        <th>Student Name</th>
+                                        <th>Total Obtained Marks</th>
+                                        <th>Total Marks</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach ($students as $student)
+                                        <tr>
+                                            <td>{{ $student->roll }}</td>
+                                            <td>{{ $student->f_name }} {{ $student->l_name }}</td>
+                                        
+                                            <!-- Check if the student has results -->
+                                            @if($student->result->isNotEmpty())
+                                                <!-- Loop through the results for each student -->
+                                                @foreach ($student->result as $result)
+                                                    <td>{{ $result->total_obtained_marks ?? '-' }}</td>
+                                                    <td>{{ $result->total_marks ?? '-' }}</td>
+                                                    <td>{{ $result->percentage ?? '-' }}</td>
+                                                @endforeach
+                                            @else
+                                                <!-- If the student has no results, display 'No results available' -->
+                                                <td colspan="3">No results available</td>
+                                                
+                                            @endif
+                                        </tr>
+
+                                    @endforeach
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
-                </div>
-            </div>
             
-            <div class="table-responsive">
-                <table class="table display data-table text-nowrap">
-                    <thead>
-                        <tr>
-                            <th>Roll no.</th>
-                            <th>Student Name</th>
-                            <th>Total Obtained Marks</th>
-                            <th>Total Marks</th>
-                            <th>Percentage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($teacher->students as $student)
-                            
-                        <tr>
-                            <td>{{ $student->roll }}</td>
-                            <td>{{ $student->f_name }} {{ $student->l_name }}</td>
-                            <td>
-                                @if ( $student->result->total_obtained_marks >= 0)
-                                {{ $student->result->total_obtained_marks }}
-                                @else
-                                0
-                                @endif
-                            </td>
-                            <td>
-                                @if ( $student->result->total_marks >= 0)
-                                {{ $student->result->total_marks }}
-                                @else
-                                0
-                                @endif
-                            </td>
-                            <td>
-                                @if ( $student->result->percentage >= 0)
-                                {{ $student->result->percentage }}
-                                @else
-                                0
-                                @endif
-                            </td>
-                        </tr>
-
-                        @endforeach
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    
 @endsection
 
 

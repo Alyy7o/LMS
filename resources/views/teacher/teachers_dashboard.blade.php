@@ -6,12 +6,12 @@
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Admin Dashboard</h3>
+        <h3>Teacher Dashboard</h3>
         <ul>
             <li>
-                <a href="{{url('index')}}">Home</a>
+                <a href="{{url('teachers_dashboard')}}">Home</a>
             </li>
-            <li>Teachers</li>
+            <li>Teacher</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -19,53 +19,43 @@
         <!-- Dashboard summery Start Here -->
         <div class="col-12 col-4-xxxl">
             <div class="row">
-                <div class="col-6-xxxl col-lg-3 col-sm-6 col-12">
+                <div class=" col-6">
                     <div class="dashboard-summery-two">
                         <div class="item-icon bg-light-magenta">
                             <i class="flaticon-classmates text-magenta"></i>
                         </div>
                         <div class="item-content">
-                            <div class="item-number"><span class="counter" data-num="35000">35,000</span></div>
+                            <div class="item-number"><span class="counter" data-num="{{ $students }}">{{ $students }}</span></div>
                             <div class="item-title">Total Students</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6-xxxl col-lg-3 col-sm-6 col-12">
+                <div class=" col-6">
                     <div class="dashboard-summery-two">
                         <div class="item-icon bg-light-blue">
                             <i class="flaticon-shopping-list text-blue"></i>
                         </div>
                         <div class="item-content">
-                            <div class="item-number"><span class="counter" data-num="19050">19,050</span></div>
-                            <div class="item-title">Total Exams</div>
+                            <div class="item-number"><span class="counter" data-num="{{ $classes }}">{{ $classes }}</span></div>
+                            <div class="item-title">Classes</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6-xxxl col-lg-3 col-sm-6 col-12">
+                <div class=" col-6">
                     <div class="dashboard-summery-two">
                         <div class="item-icon bg-light-yellow">
                             <i class="flaticon-mortarboard text-orange"></i>
                         </div>
                         <div class="item-content">
-                            <div class="item-number"><span class="counter" data-num="23890">23,890</span></div>
-                            <div class="item-title">Graduate Studes</div>
+                            <div class="item-number"><span class="counter" data-num="{{ $sections }}">{{ $sections }}</span></div>
+                            <div class="item-title">Sections</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6-xxxl col-lg-3 col-sm-6 col-12">
-                    <div class="dashboard-summery-two">
-                        <div class="item-icon bg-light-red">
-                            <i class="flaticon-money text-red"></i>
-                        </div>
-                        <div class="item-content">
-                            <div class="item-number"><span>$</span><span class="counter" data-num="2102050">21,02,050</span></div>
-                            <div class="item-title">Total Income</div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
-        <!-- Dashboard summery End Here -->
+        {{-- <!-- Dashboard summery End Here -->
         <!-- Students Chart End Here -->
         <div class="col-lg-6 col-4-xxxl col-xl-6">
             <div class="card dashboard-card-three">
@@ -578,5 +568,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

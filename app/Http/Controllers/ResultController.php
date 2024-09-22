@@ -98,6 +98,7 @@ class ResultController extends Controller
     {
         $student = Student::with('result')->findOrFail($id);
         // $marks = Marks::where('student_id', $id)->findOrFail();
+        // dd($student);
 
         return view('exam.student_result', compact('student'));
     }   
@@ -105,9 +106,11 @@ class ResultController extends Controller
     // Show the results for all students of a specific teacher
     public function all_result($id)
     {
-        $teacher = Teacher::with('students')->where('user_id', $id)->firstOrFail();
+        $teacher = Teacher::where('user_id', $id)->firstOrFail();
+        $students = $teacher->students()->with('result')->get();
+        // dd($students);
 
-        return view('exam.all_result', compact('teacher'));
+        return view('exam.all_result', compact('teacher','students'));
     }
 
 

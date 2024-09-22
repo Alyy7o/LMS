@@ -2,17 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fee;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Classes;
 use App\Models\Section;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class OwnerController extends Controller
 {
+
+    public function owner_dashboard()
+    {
+        $id = Auth::id();
+        
+        $teachers = User::where('owner_id', $id)->where('role', 'teacher')->count();
+        $parents = User::where('owner_id', $id)->where('role', 'parent')->count();
+        $fees = Fee::where('user_id', $id)->sum('amount');
+        $students = Student::all()->count();
+        $classes = Classes::all()->count();
+        $sections = Section::all()->count();
+
+        // Return view with students count
+        return view('owner.owner_dashboard', compact('students', 'teachers', 'parents', 'fees', 'sections', 'classes'));
+        
+        // Get the count of students based on owner_id
+        // $students = Student::whereHas('parent', function ($query) use ($id) {
+        //     $query->where('user_id', $id);
+        // })->count();
+
+        // $parents = User::where('owner_id', $id)->where('role','parent')->get();
+        // $studentsCount = 0;
+
+        // foreach ($parents as $parent) {
+        //     foreach ($parent->students as $student) {
+        //         // $studentsCount[] = $student;
+        //         $studentsCount = $studentsCount + $parent->students;
+        //     }
+        // }
+        
+        // You can now count the students
+        // $students = count($studentsCount);
+        // dd($students);
+
+        // $students = User::where('owner_id', $id)
+        //             // ->where('role', 'parent')
+        //             ->withCount('students')
+        //             ->get()
+        //             ->sum('students_count');
+
+
+
+
+        // $students = Student::whereHas('parent', function ($query) use ($id) {
+        //     $query->whereHas('user', function ($userQuery) use ($id) {
+        //         $userQuery->where('owner_id', $id);
+        //     });
+        // })->count();
+
+        // $teachers = User::where('owner_id', $id)->where('role', 'teacher')->count(); 
+        // dd($teachers);
+
+
+    }
     
     public function all_admin(){
          $admins = Admin::all();

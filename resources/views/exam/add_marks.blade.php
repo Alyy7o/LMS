@@ -36,70 +36,62 @@
         @endif
         
     <!-- Add Class Area Start Here -->
-    <div class="row">
-     <div class="col-4-xxxl col-12">
 
-        <form class="new-added-form" action="{{route('store_marks')}}" method="post">
-             @csrf
-
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>Add New Subject</h3>
-                                    </div>
-                                    <div>
-                                        <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
-                                    </div>
-                                </div>
-  
-                                    <div class="row">
-                                        
-                                        
-                                        <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
-                                            <label>Class </label>
-                                            <select class="form-control class_id" id="class-dd" name="class_id">
-                                                <option value="">Please Select Class</option>
-                                            <!-- Options for classes -->
-                                            @foreach($classes as $class)
-                                                <option value="{{ $class->id }} {{ old('class-dd') == '$class->name' ? 'selected' : '' }}">{{ $class->name }}</option>
-                                            @endforeach
-                                        </select>
-                    
-                                            
-                                        </div>
+    
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>Add New Subject</h3>
+                </div>
+                <div>
+                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                </div>
+            </div>
+            
+            <form class="new-added-form" action="{{route('store_marks')}}" method="post">
+                @csrf
+                <div class="row">
                                        
-                                        <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
-                                            <label>Section </label>
-                                            <select id="section-dd" name="section_id" class="form-control section_id">
-                                                <option value="">Please Select Section</option>
-                                            </select>
-                                        </div>
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label>Class </label>
+                        <select class="form-control class_id" id="class-dd" name="class_id">
+                            <option value="">Please Select Class</option>
+                        <!-- Options for classes -->
+                        @foreach($classes as $class)
+                            <option value="{{ $class->id }} {{ old('class-dd') == '$class->name' ? 'selected' : '' }}">{{ $class->name }}</option>
+                        @endforeach
+                        </select>   
+                    </div>
+                                       
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label>Section </label>
+                        <select id="section-dd" name="section_id" class="form-control section_id">
+                            <option value="">Please Select Section</option>
+                        </select>
+                    </div>
 
-                                        <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
-                                            <label>Subject </label>
-                                            <select id="subject-dd" name="subject_id" class="form-control subject_id">
-                                                <option value="">Please Select Subject</option>
-                                            </select>
-                                        </div>
+                    <div class="col-xl-4 col-lg-6 col-12 form-group mt-3">
+                        <label>Subject </label>
+                        <select id="subject-dd" name="subject_id" class="form-control subject_id">
+                            <option value="">Please Select Subject</option>
+                        </select>
+                    </div>
 
-                                        <div class="col-12 form-group mt-3">
-                                            <label>Students</label>
-                                            <div id="students-list">
-                                                <!-- Students will be displayed here -->
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 form-group mg-t-8">
-                                                <input type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" value="Save">
-                                        </div>
-                                    </div>
-
-                            </div>
+                    <div class="col-12 form-group mt-3">
+                        <label>Students</label>
+                        <div id="students-list">
+                            <!-- Students will be displayed here -->
                         </div>
-                    </form>
-     </div>
-                    
+                    </div>
+
+                    <div class="col-12 form-group mg-t-8">
+                            <input type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" value="Save">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
         
 @endsection

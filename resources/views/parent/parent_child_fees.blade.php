@@ -5,12 +5,12 @@
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Teachers</h3>
+        <h3>Fees</h3>
         <ul>
             <li>
                 <a href="{{url('index')}}">Home</a>
             </li>
-            <li>Student Result</li>
+            <li>All Students Fees</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -44,11 +44,7 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>Result of: {{ $student->f_name }} {{ $student->l_name }}</h3>
-                </div>
-
-                <div>
-                    <button onclick="goBack()" class="fw-btn-fill btn btn-danger" style="padding: 0 30px">Back</button>
+                    <h3>All Students Fee</h3>
                 </div>
                 
             </div>
@@ -57,38 +53,60 @@
                 <table class="table display data-table text-nowrap">
                     <thead>
                         <tr>
-                            <th>Subject</th>
-                            <th>Obtained Marks</th>
-                            <th>Total Marks</th>
+                            <th>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input checkAll">
+                                    <label class="form-check-label">Roll</label>
+                                </div>
+                            </th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Parent</th>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Fee</th>
+                            <th>Status</th>
+        
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($student->marks as $mark)
+                        @foreach($students as $student)
+                        
                         <tr>
-                            <td>{{ $mark->subjects->name }}</td>
-                            <td>{{ $mark->obtained_marks }}</td>
-                            <td>{{ $mark->total_marks }}</td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td><strong>Total</strong></td>
-                        @if($student->result->isNotEmpty())
-                            <!-- Loop through the results for each student -->
-                            @foreach ($student->result as $result)
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input">
+                                    <label class="form-check-label">#{{ $student->id }}</label>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                @if($student->pic)
+                                <img src="{{ asset('students/' . $student->pic) }}" alt="{{ $student->name }}" style="width: 5em; height: 5em;">
+                                @else
+                                No Photo
+                                @endif
+                            </td>
+                            <td>{{ $student->f_name }} {{ $student->l_name }}</td>
+                            <td>{{ $student->parents->f_name }} {{ $student->parents->l_name }} </td>
+                            <td>{{ $student->classes->name }}</td>
+                            <td>{{ $student->sections->name }}</td>
 
-                                <td><strong>{{ $result->total_obtained_marks ?? '-' }}</strong></td>
-                                <td><strong>{{ $result->total_marks ?? '-' }}</strong></td>
-                    </tr>
-                        <tr>
-                                <td><strong>Percentage</strong></td>
-                                <td colspan="2"><strong>{{ $result->percentage ?? '-' }}%</strong></td>
-                        </tr>
+                            @foreach($student->fees as $fee)
+                                <td>{{ $fee->amount }}</td>
+                                @if ( $fee->status == "paid" )
+
+                                <td class="badge badge-pill badge-success d-block mg-t-8">Paid</td>   
+
+                                @else
+
+                                <td class="badge badge-pill badge-danger d-block mg-t-8">Unpaid</td>
+
+                                @endif
                             @endforeach
                             
-                            @else
-                                <!-- If the student has no results, display 'No results available' -->
-                                <td colspan="3">No results available</td>
-                        @endif
+                            
+                        </tr>
+                        @endforeach
                         
                     </tbody>
                 </table>
@@ -97,5 +115,3 @@
     </div>
     
 @endsection
-
-

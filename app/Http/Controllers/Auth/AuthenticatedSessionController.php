@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
     
             // super admin
             if( $user->role === 'super_admin'){
-                    return redirect('index');
+                    return redirect('super_admin/dashboard');
                 }
 
                 // owner
@@ -66,22 +66,22 @@ class AuthenticatedSessionController extends Controller
                             }
                         }
 
-                        return redirect('all_admin');
+                        return redirect('owner_dashboard');
    
                 }
                 
                 // admin
                 else if( $user->role === 'admin'){
-                    return redirect('student');
+                    return redirect('admin_dashboard');
                 }
                 
                 // teacher
                 else if($request->user()->role === 'teacher'){
-                    return redirect('parent');
+                    return redirect('teachers_dashboard');
                 }
                 
                 else if($request->user()->role === 'parent'){
-                    return redirect('parent_welcome');
+                    return redirect('parent_dashboard');
                 }
 
                 // else if($request->user()->role === 'student'){

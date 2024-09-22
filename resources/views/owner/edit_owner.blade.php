@@ -8,7 +8,7 @@
         <h3>Owners</h3>
         <ul>
             <li>
-                <a href="{{url('index')}}">Home</a>
+                <a href="{{url('super_admin/dashboard')}}">Home</a>
             </li>
             <li>Edit Owner</li>
         </ul>

@@ -1,27 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection --}}
-
 @extends('layout.main')
 @section('content')
 
@@ -31,7 +7,7 @@
         <h3>Admin Dashboard</h3>
         <ul>
             <li>
-                <a href="{{url('index.php')}}">Home</a>
+                <a href="{{url('admin_dashboard')}}">Home</a>
             </li>
             <li>Admin</li>
         </ul>
@@ -39,7 +15,7 @@
     <!-- Breadcubs Area End Here -->
     <!-- Dashboard summery Start Here -->
     <div class="row gutters-20">
-        <div class="col-xl-3 col-sm-6 col-12">
+        <div class="col-xl-12 col-sm-6 col-12">
             <div class="dashboard-summery-one mg-b-20">
                 <div class="row align-items-center">
                     <div class="col-6">
@@ -50,13 +26,13 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Students</div>
-                            <div class="item-number"><span class="counter" data-num="150000">1,50,000</span></div>
+                            <div class="item-number"><span class="counter" data-num="{{ $students }}">{{ $students }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        {{-- <div class="col-xl-6 col-sm-6 col-12">
             <div class="dashboard-summery-one mg-b-20">
                 <div class="row align-items-center">
                     <div class="col-6">
@@ -67,13 +43,13 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Teachers</div>
-                            <div class="item-number"><span class="counter" data-num="2250">2,250</span></div>
+                            <div class="item-number"><span class="counter" data-num="{{ $teachers }}">{{ $teachers }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        <div class="col-xl-6 col-sm-6 col-12">
             <div class="dashboard-summery-one mg-b-20">
                 <div class="row align-items-center">
                     <div class="col-6">
@@ -84,13 +60,13 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Parents</div>
-                            <div class="item-number"><span class="counter" data-num="5690">5,690</span></div>
+                            <div class="item-number"><span class="counter" data-num="{{ $parents }}">{{ $parents }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        </div> --}}
+        <div class="col-xl-12 col-sm-6 col-12">
             <div class="dashboard-summery-one mg-b-20">
                 <div class="row align-items-center">
                     <div class="col-6">
@@ -101,14 +77,14 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Earnings</div>
-                            <div class="item-number"><span>$</span><span class="counter" data-num="193000">1,93,000</span></div>
+                            <div class="item-number"><span>$</span><span class="counter" data-num="{{ $fees }}">{{ $fees }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Dashboard summery End Here -->
+    {{-- <!-- Dashboard summery End Here -->
     <!-- Dashboard Content Start Here -->
     <div class="row gutters-20">
         <div class="col-12 col-xl-8 col-6-xxxl">
@@ -455,6 +431,6 @@
         <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
                 href="#">PsdBosS</a></div>
     </footer>
-    <!-- Footer Area End Here -->
+    <!-- Footer Area End Here --> --}}
 </div>
 @endsection

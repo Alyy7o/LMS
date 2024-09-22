@@ -7,9 +7,9 @@
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
                 <div class="header-logo">
-                    <a href="{{ url('index') }}">
+                    {{-- <a href="{{ url('index') }}">
                         <img src="{{ asset('assets/img/logo.png') }}" alt="logo">
-                    </a>
+                    </a> --}}
                 </div>
                 <div class="toggle-button sidebar-toggle">
                     <button type="button" class="item-link">
@@ -44,41 +44,8 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title">{{ auth()->user()->name }}</h5>
-                                <span>{{ auth()->user()->role }}</span>
-                            </div>
-                            <div class="admin-img">
-                                <img src="{{ asset('assets/img/figure/admin.jpg') }}" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                    <li><a href="#"><i
-                                                class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                    </li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();"><i
-                                                class="flaticon-turn-off"></i>LOGOUT</a></li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-message">
+                    
+                    {{-- <li class="navbar-item dropdown header-message">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
                             <i class="far fa-envelope"></i>
@@ -153,7 +120,7 @@
                                 </div>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="navbar-item dropdown header-notification">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                             data-toggle="dropdown" aria-expanded="false">
@@ -197,7 +164,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="navbar-item dropdown header-language">
+                    {{-- <li class="navbar-item dropdown header-language">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                             data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -205,6 +172,40 @@
                             <a class="dropdown-item" href="#">Spanish</a>
                             <a class="dropdown-item" href="#">Franchis</a>
                             <a class="dropdown-item" href="#">Chiness</a>
+                        </div>
+                    </li> --}}
+                    <li class="navbar-item dropdown header-admin">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <div class="admin-title">
+                                <h5 class="item-title">{{ auth()->user()->name }}</h5>
+                                <span>{{ auth()->user()->role }}</span>
+                            </div>
+                            <div class="admin-img">
+                                <img src="{{ asset('assets/img/figure/admin.jpg') }}" alt="Admin">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="item-header">
+                                <h6 class="item-title">Steven Zone</h6>
+                            </div>
+                            <div class="item-content">
+                                <ul class="settings-list">
+                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
+                                    <li><a href="#"><i
+                                                class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
+                                    </li>
+                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                    <li><a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();"><i
+                                                class="flaticon-turn-off"></i>LOGOUT</a></li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </ul>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -227,47 +228,25 @@
 
 
                             @if (Auth::user()->role === 'super_admin')
-                                <li class="nav-item sidebar-nav-item">
-                                    <a href="#" class="nav-link"><i
+
+                                <li class="nav-item">
+                                    <a href="{{ url('super_admin/dashboard') }}" class="nav-link"><i
                                             class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                                    <ul class="nav sub-group-menu">
-                                        <li class="nav-item">
-                                            <a href="{{ url('index') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Admin</a>
-                                        </li>
-                                    </ul>
                                 </li>
 
                                 {{-- Owner --}}
                                 <li class="nav-item">
                                     <a href="{{ url('all_owner') }}" class="nav-link"><i
-                                            class="flaticon-dashboard"></i><span>Owners</span></a>
+                                            class="flaticon-multiple-users-silhouette"></i><span>Owners</span></a>
                                 </li>
                             @endif
 
                             @if (Auth::user()->role === 'owner')
-                                <li class="nav-item sidebar-nav-item">
-                                    <a href="#" class="nav-link"><i
-                                            class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                                    <ul class="nav sub-group-menu">
-                                        <li class="nav-item">
-                                            <a href="{{ url('indexx') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Admin</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('student') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Students</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('parent') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Parents</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('teacher') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Teachers</a>
-                                        </li>
-                                    </ul>
-                                </li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('owner_dashboard') }}" class="nav-link"><i
+                                        class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                            </li>
 
                                 <li class="nav-item">
                                     <a href="{{ url('edit_owner', Auth::user()->id) }}" class="nav-link"><i
@@ -284,24 +263,12 @@
                             {{-- Admin Role --}}
 
                             @if (Auth::user()->role === 'admin')
-                                <li class="nav-item sidebar-nav-item">
-                                    <a href="#" class="nav-link"><i
-                                            class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                                    <ul class="nav sub-group-menu">
-                                        <li class="nav-item">
-                                            <a href="{{ url('student') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Students</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('parent') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Parents</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('teacher') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Teachers</a>
-                                        </li>
-                                    </ul>
-                                </li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('admin_dashboard') }}" class="nav-link"><i
+                                        class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                            </li>
+
                             @endif
 
                             {{-- Owner And Admin Role --}}
@@ -376,12 +343,6 @@
                                             Routine</span></a>
                                 </li> --}}
 
-                                {{-- Attendance --}}
-                                <li class="nav-item">
-                                    <a href="{{ url('student_attendence') }}" class="nav-link"><i
-                                            class="flaticon-checklist"></i><span>AttendAnce</span></a>
-                                </li>
-
                                 {{-- Transport --}}
                                 {{-- <li class="nav-item">
                                     <a href="{{ url('transport') }}" class="nav-link"><i
@@ -409,19 +370,12 @@
 
                             @endif
 
-                            {{-- @if (Auth::user()->role === 'owner' || Auth::user()->role === 'admin' || Auth::user()->role === 'teacher') --}}
 
                             @if (Auth::user()->role === 'teacher')
 
-                                <li class="nav-item sidebar-nav-item">
-                                    <a href="#" class="nav-link"><i
+                                <li class="nav-item">
+                                    <a href="{{ url('teachers_dashboard') }}" class="nav-link"><i
                                             class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                                    <ul class="nav sub-group-menu">
-                                        <li class="nav-item">
-                                            <a href="{{ url('parent') }}" class="nav-link"><i
-                                                    class="fas fa-angle-right"></i>Parents</a>
-                                        </li>
-                                    </ul>
                                 </li>
 
                                 {{-- Teachers Profile --}}
@@ -452,6 +406,7 @@
                                         </span>
                                     </a>
                                 </li>
+
                                 <li class="nav-item">
                                     <a href="{{ url('all_result', Auth::user()->id) }}" class="nav-link"><i
                                             class="fas fa-graduation-cap"></i><span>
@@ -459,15 +414,21 @@
                                         </span>
                                     </a>
                                 </li>
+
+                                
+                                {{-- Attendance --}}
+                                {{-- <li class="nav-item">
+                                    <a href="{{ url('student_attendence', Auth::user()->id) }}" class="nav-link"><i
+                                            class="flaticon-checklist"></i><span>Attendance</span></a>
+                                </li> --}}
                             @endif
 
-                            {{-- @endif    --}}
 
                             @if (Auth::user()->role === 'parent')
                                 
                             {{-- Parent Welcome --}}
                             <li class="nav-item">
-                                <a href="{{ url('parent_welcome', Auth::user()->id) }}" class="nav-link"><i
+                                <a href="{{ url('parent_dashboard', Auth::user()->id) }}" class="nav-link"><i
                                         class="fas fa-user-tie"></i><span>Profile</span></a>
                             </li>
 
@@ -484,6 +445,11 @@
                             <li class="nav-item">
                                 <a href="{{ url('parent_child_attendance', Auth::user()->id) }}" class="nav-link"><i
                                         class="flaticon-checklist"></i><span>Attendance</span></a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a href="{{ url('parent_child_fees', Auth::user()->id) }}" class="nav-link"><i
+                                        class="flaticon-technological"></i><span>Fee</span></a>
                             </li>
 
                             @endif

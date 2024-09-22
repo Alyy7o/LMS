@@ -180,11 +180,33 @@ document.addEventListener('DOMContentLoaded', function() {
         window.history.back();
     }
 
+    // Pre-Loader
+    window.addEventListener('load', function () {
+          var preloader = document.getElementById('preloader');
+          var opacity = 1; // Initial opacity
+          var fadeSpeed = 0.01; // Adjust this value to slow down the fade-out
+          var intervalTime = 50; // Interval time in milliseconds
+            
+          var fadeEffect = setInterval(function () {
+            if (opacity > 0) {
+              opacity -= fadeSpeed;
+              preloader.style.opacity = opacity;
+            } else {
+              clearInterval(fadeEffect);
+              preloader.style.opacity = 0;
+              preloader.remove(); // Remove the preloader once it's faded out
+            }
+          }, intervalTime);
+        });
+
+
 
 
  </script>
 <!-- jquery-->
 <script src="{{asset('assets/js/jquery-3.3.1.min.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- Plugins js -->
 <script src="{{asset('assets/js/plugins.js')}}"></script>
 <!-- Popper js -->

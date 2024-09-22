@@ -2,15 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
+use LDAP\Result;
+use App\Models\Fee;
+use App\Models\User;
+use App\Models\Notice;
 use App\Models\Parents;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Notifications\Notification;
 
 class ParentController extends Controller
 {
-    public function parent_welcome()
+    public function parent_dashboard()
     {
-        return view('parent.parent_welcome');
+        //parent id in user table
+        $id = Auth::id();
+
+        //Parent id in parents table
+        $user = Parents::where('user_id', $id)->get('id');
+
+        $parent = Parents::where('user_id', $id)->firstOrFail();
+        $students = Student::where('parent_id', $user)->count();
+        // dd($students);
+        // $student = Student::where('parent_id', $user)->get();
+        // $student_fee = $parent->students()->with(['fees'])->get();
+        // $student_fee = $student->fees()->where('status', 'unpaid')->first()->amount ?? 0;
+        // $amount = 0; 
+        // foreach ($students->fees as $fee) {
+        //     $amount += $fee;
+        // } 
+        $note = Notice::all()->count();
+        $result = Parents::with("students.result")->count();
+        $amount = Fee::sum('amount');
+
+        return view('parent.parent_dashboard', compact('students', 'amount', 'note', 'result'));
     }
 
     public function parent_child_data(string $id)
@@ -57,5 +83,15 @@ class ParentController extends Controller
         }
 
         return view('parent.parent_child_attendance', compact('students', 'attendanceData'));
+    }
+
+    public function parent_child_fees(string $id){
+        // Fetch all students with their fees
+        // $students = Student::with('fees')->where->get();
+        $parent = Parents::where('user_id', $id)->firstOrFail();
+        $students = $parent->students()->with(['fees'])->get(); 
+
+
+        return view('parent.parent_child_fees', compact('students'));
     }
 }
