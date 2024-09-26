@@ -35,17 +35,6 @@ class AdminController extends Controller
 
     }
 
-    
-    // public function student(){
-    //     return view('admin.index3');
-    // }
-
-
-    // public function parent(){
-    //     return view('admin.parents');
-    // }
-    
-
 
     // Classes
 

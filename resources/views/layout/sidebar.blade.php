@@ -187,16 +187,16 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
+                                <h6 class="item-title">{{ auth()->user()->name }}</h6>
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                    <li><a href="#"><i
+                                    {{-- <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li> --}}
+                                    {{-- <li><a href="#"><i class="flaticon-list"></i>Task</a></li> --}}
+                                    {{-- <li><a href="#"><i
                                                 class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                    </li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                    </li> --}}
+                                    {{-- <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li> --}}
                                     <li><a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();"><i
